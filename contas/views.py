@@ -5,7 +5,6 @@ from .serializers import ContaClienteSerializer, ContaFuncionarioSerializer, Rec
 from rest_framework.authentication import TokenAuthentication
 from .permissions import ContaDeAdministradorAuthToken, ContaPropriaAuthToken, ContaPropriaOuAdministradorAuthToken
 from utils.mixins import SerializerByMethodMixin
-from django.contrib.auth.hashers import make_password
 # Create your views here.
 
 class CriarContasClientView(generics.CreateAPIView):
@@ -55,14 +54,7 @@ class AtualizarPropriaContaView(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [ContaPropriaAuthToken]
 
-
-    def perform_update(self, serializer):
-
-        dados_da_conta = self.request.data  
-
-        senha_hasheada = make_password(dados_da_conta['password'])
-
-        serializer.save(password=senha_hasheada) 
+        
 
 
         

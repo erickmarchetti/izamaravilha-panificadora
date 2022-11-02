@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from .models import Conta
+from django.contrib.auth.hashers import make_password
 
 
 class LoginSerializer(serializers.ModelSerializer):
@@ -64,4 +65,21 @@ class AtualizarPropriaContaSerializer(serializers.ModelSerializer):
         model = Conta
         fields = ['id', 'username', 'password', 'first_name', 'last_name', 'telefone', 'cpf', 'data_nascimento', 'is_employee', 'is_superuser', 'pontos_de_fidelidade',]
         read_only_fields = ['id', 'cpf', 'is_employee', 'is_superuser', 'pontos_de_fidelidade',]
+
+
+    def update(self, instance, validated_data):
+
+        for key, value in validated_data.items():
+            if key == 'password':
+                valor_alterado = make_password(value)                
+            else:
+                valor_alterado = value
+            
+            setattr(instance, key, valor_alterado)
+
+        instance.save()
+        
+        return instance
+
+
    
