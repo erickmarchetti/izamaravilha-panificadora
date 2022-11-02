@@ -10,9 +10,9 @@ class ComandaStatus(models.TextChoices):
 
 class Comanda(models.Model):
     status = models.CharField(
-        max_length=30, choices=ComandaStatus, default=ComandaStatus.ABERTA
+        max_length=30, choices=ComandaStatus.choices, default=ComandaStatus.ABERTA
     )
-    data_criacao = models.DateField(auto_now_add=True)
+    data_criacao = models.DateTimeField(auto_now_add=True)
 
     conta = models.ForeignKey(
         "contas.Conta", on_delete=models.CASCADE, related_name="comandas"
@@ -23,8 +23,8 @@ class Comanda_Produto(models.Model):
     quantidade = models.PositiveIntegerField()
 
     comanda = models.ForeignKey(
-        "comandas.Comanda", on_delete=models.CASCADE, related_name="comanda_produtos"
+        "comandas.Comanda", on_delete=models.CASCADE, related_name="comanda_produto"
     )
     produto = models.ForeignKey(
-        "produtos.Produto", on_delete=models.CASCADE, related_name="comanda_produtos"
+        "produtos.Produto", on_delete=models.CASCADE, related_name="comanda_produto"
     )
