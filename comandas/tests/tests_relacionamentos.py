@@ -3,7 +3,7 @@ from django.test import TestCase
 from comandas.models import Comanda
 from contas.models import Conta
 
-from mocks.mocks_comanda import (
+from utils.mocks import (
     conta_cliente_mockada,
     conta_adm_mockada,
     conta_funcionario_mockada,
