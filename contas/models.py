@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-
 class Conta(AbstractUser):
 
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
@@ -15,6 +14,11 @@ class Conta(AbstractUser):
     cpf = models.CharField(max_length=11, unique=True)
     telefone = models.CharField(max_length=15)
     pontos_de_fidelidade = models.IntegerField(default=0)
-    
 
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'data_nascimento', 'cpf', 'telefone',]
+    REQUIRED_FIELDS = [
+        "first_name",
+        "last_name",
+        "data_nascimento",
+        "cpf",
+        "telefone",
+    ]
