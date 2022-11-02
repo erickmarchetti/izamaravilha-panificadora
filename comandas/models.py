@@ -15,16 +15,16 @@ class Comanda(models.Model):
     data_criacao = models.DateField(auto_now_add=True)
 
     conta = models.ForeignKey(
-        "contas.Conta", on_delete=models.CASCADE, references="comandas"
+        "contas.Conta", on_delete=models.CASCADE, related_name="comandas"
     )
 
 
-class ComandaProduto(models.Model):
+class Comanda_Produto(models.Model):
     quantidade = models.PositiveIntegerField()
 
     comanda = models.ForeignKey(
-        "comandas.Comanda", on_delete=models.CASCADE, references="comanda_produtos"
+        "comandas.Comanda", on_delete=models.CASCADE, related_name="comanda_produtos"
     )
     produto = models.ForeignKey(
-        "produtos.Produto", on_delete=models.CASCADE, references="comanda_produtos"
+        "produtos.Produto", on_delete=models.CASCADE, related_name="comanda_produtos"
     )
