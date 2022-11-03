@@ -3,6 +3,7 @@ from rest_framework.validators import UniqueValidator
 
 from django.core.validators import MinValueValidator
 from django.shortcuts import get_object_or_404
+from comandas.exceptions import ChaveChoiceInvalida
 
 from comandas.models import Comanda, Comanda_Produto
 from contas.models import Conta
@@ -96,38 +97,7 @@ class EditarQuantidadeProdutoSerializer(serializers.ModelSerializer):
         return instance.comanda
 
 
-# class ListarProdutoSerializer(serializers.ModelSerializer):
-#     produto_id = serializers.UUIDField(
-#         write_only=True,
-#         validators=[
-#             UniqueValidator(
-#                 Comanda_Produto.objects.all(), "produto já adicionado a comanda"
-#             )
-#         ],
-#     )
-#     quantidade = serializers.IntegerField(
-#         write_only=True, validators=[MinValueValidator(1)]
-#     )
-#     produtos = serializers.SerializerMethodField(method_name="listar_produtos")
-
-#     class Meta:
-#         model = Comanda
-#         fields = [
-#             "id",
-#             "status",
-#             "data_criacao",
-#             "conta",
-#             "produto_id",
-#             "quantidade",
-#             "produtos",
-#         ]
-#         read_only_fields = ["id", "status", "data_criacao", "conta"]
-
-#     def listar_produtos(self, comanda: Comanda):
-#         return listar_produtos_de_uma_comanda(comanda)
-
-
-class EditarProdutoSerializer(serializers.ModelSerializer):
+class ListarProdutoSerializer(serializers.ModelSerializer):
     produto_id = serializers.UUIDField(
         write_only=True,
         validators=[
@@ -152,34 +122,39 @@ class EditarProdutoSerializer(serializers.ModelSerializer):
             "quantidade",
             "produtos",
         ]
-        read_only_fields = [
-            "id",
-            "data_criacao",
-            "conta",
-            "produto_id",
-            "quantidade",
-            "produtos",
-        ]
+        read_only_fields = ["id", "status", "data_criacao", "conta"]
 
     def listar_produtos(self, comanda: Comanda):
         return listar_produtos_de_uma_comanda(comanda)
 
-    # def create(self, validated_data):
-    #     """
-    #     TODO
-    #     - verificar se o produto tem estoque sufuciente
-    #     - verificar se o usuário tem endereço cadastrado
-    #     """
 
-    #     dono_comanda: Conta = validated_data["conta"]
+class EditarProdutoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comanda
+        fields = [
+            "id",
+            "status",
+            "data_criacao",
+            "conta",
+        ]
+        read_only_fields = [
+            "id",
+            "data_criacao",
+            "conta",
+        ]
 
-    #     produto = get_object_or_404(Produto, id=validated_data["produto_id"])
+    def update(self, instance, validated_data: dict):
+        if (
+            validated_data["conta"] == instance.conta
+            and not validated_data["status"] == "fechada"
+        ):
+            raise ChaveChoiceInvalida(
+                "Valor da chave deve ser apenas de fechamento de comanda"
+            )
 
-    #     comanda_mais_nova = pegar_ou_criar_comanda_mais_nova(dono_comanda)
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
 
-    #     comanda_mais_nova.comanda_produto.create(
-    #         produto=produto,
-    #         quantidade=validated_data["quantidade"],
-    #     )
+        instance.save()
 
-    #     return comanda_mais_nova
+        return instance

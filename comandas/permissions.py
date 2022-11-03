@@ -15,3 +15,8 @@ class ApenasAdministradorFuncionarioOuDonoDaComanda(BasePermission):
             or request.user.is_employee
             or request.user.is_superuser
         )
+
+
+class ApenasAdministradorOuFuncionario(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_employee or request.user.is_superuser
