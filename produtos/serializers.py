@@ -1,7 +1,4 @@
-from asyncore import read
-from dataclasses import fields
 from rest_framework import serializers
-
 from produtos.models import Produto
 
 
@@ -10,7 +7,7 @@ class ProdutoSerializer(serializers.ModelSerializer):
         model = Produto
         fields = [
             "id",
-            "categoria_id",
+            # "categoria_id",
             "preco",
             "nome",
             "imagem",
