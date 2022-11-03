@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from enderecos.serializers import EnderecoResumidoSerializer
+from enderecos.models import Endereco
 
 from .models import Conta
 from django.contrib.auth.hashers import make_password
@@ -14,6 +16,7 @@ class ContaClienteSerializer(serializers.ModelSerializer):
 
     id = serializers.UUIDField(read_only=True)
     password = serializers.CharField(max_length=256, write_only=True)
+    endereco = EnderecoResumidoSerializer()
 
     class Meta:
         model = Conta
@@ -29,18 +32,26 @@ class ContaClienteSerializer(serializers.ModelSerializer):
             "is_employee",
             "is_superuser",
             "pontos_de_fidelidade",
+            "endereco",
         ]
-        read_only_fields = ["id", "is_employee", "pontos_de_fidelidade"]
+        read_only_fields = ["id", "is_employee", "pontos_de_fidelidade",]
 
     def create(self, validated_data):
 
-        return Conta.objects.create_user(**validated_data)
+        dados_endereco = validated_data.pop('endereco')
+
+        usuario = Conta.objects.create_user(**validated_data)
+
+        Endereco.objects.create(**dados_endereco, conta=usuario)
+
+        return usuario
 
 
 class ContaFuncionarioSerializer(serializers.ModelSerializer):
 
     id = serializers.UUIDField(read_only=True)
     password = serializers.CharField(max_length=256, write_only=True)
+    endereco = EnderecoResumidoSerializer()
 
     class Meta:
         model = Conta
@@ -56,12 +67,19 @@ class ContaFuncionarioSerializer(serializers.ModelSerializer):
             "is_employee",
             "is_superuser",
             "pontos_de_fidelidade",
+            "endereco"
         ]
         read_only_fields = ["id", "is_employee", "pontos_de_fidelidade"]
 
     def create(self, validated_data):
+        
+        dados_endereco = validated_data.pop('endereco')
 
-        return Conta.objects.create_user(**validated_data, is_employee=True)
+        usuario = Conta.objects.create_user(**validated_data)
+
+        Endereco.objects.create(**dados_endereco, conta=usuario)
+
+        return usuario
 
 
 class RecuperarDadosContaCompletaClienteFuncionarioSerializer(
