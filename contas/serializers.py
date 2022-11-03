@@ -75,7 +75,7 @@ class ContaFuncionarioSerializer(serializers.ModelSerializer):
         
         dados_endereco = validated_data.pop('endereco')
 
-        usuario = Conta.objects.create_user(**validated_data)
+        usuario = Conta.objects.create_user(**validated_data, is_employee=True)
 
         Endereco.objects.create(**dados_endereco, conta=usuario)
 
