@@ -21,7 +21,7 @@ urlpatterns = [
         name="user-list-delete-self-client",
     ),
     path(
-        "usuario/<str:usuario_id>/atualizar",
+        "usuario/<str:usuario_id>/atualizar/",
         views.AtualizarPropriaContaView.as_view(),
         name="user-update-self-client",
     ),
