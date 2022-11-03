@@ -6,9 +6,14 @@ from rest_framework.authentication import TokenAuthentication
 from comandas.models import Comanda, Comanda_Produto, ComandaStatus
 from comandas.serializers import (
     AdicionarOuListarProdutoSerializer,
+    EditarProdutoSerializer,
     EditarQuantidadeProdutoSerializer,
+    ListarProdutoSerializer,
 )
-from comandas.permissions import ApenasDonoDaComanda
+from comandas.permissions import (
+    ApenasAdministradorFuncionarioOuDonoDaComanda,
+    ApenasDonoDaComanda,
+)
 
 
 class ComandaAdicionarProdutoView(generics.CreateAPIView):
@@ -43,8 +48,11 @@ class ComandaEditarApagarProdutoView(generics.UpdateAPIView, generics.DestroyAPI
 
 
 class ComandaEdicaoStatus(generics.UpdateAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [ApenasAdministradorFuncionarioOuDonoDaComanda]
+
     queryset = Comanda.objects.all()
-    serializer_class = ...
+    serializer_class = EditarProdutoSerializer
     lookup_url_kwarg = "comanda_id"
 
 
