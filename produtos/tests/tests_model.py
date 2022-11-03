@@ -1,6 +1,10 @@
 from django.test import TestCase
 from produtos.models import Produto
+from contas.models import Conta
 import uuid
+from rest_framework.test import APITestCase
+from rest_framework.views import status
+from rest_framework.authtoken.models import Token
 
 # Create your tests here.
 
@@ -45,8 +49,81 @@ class TesteModelsProdutos(TestCase):
         nullable = self.leiteCaixinha._meta.get_field("descricao").null
         self.assertTrue(nullable)
 
-    def test_campos_preenchidosCorretamente(self):
+    def test_campos_preenchidos_corretamente(self):
         self.assertEqual(self.salgado.preco, self.salgado_data["preco"])
         self.assertEqual(self.salgado.nome, self.salgado_data["nome"])
         self.assertEqual(self.salgado.imagem, self.salgado_data["imagem"])
         self.assertEqual(self.salgado.descricao, self.salgado_data["descricao"])
+
+
+class TesteViewProdutos(APITestCase):
+    def setUp(self) -> None:
+        produto_correto_data = {
+            "id": str(uuid.uuid4()),
+            # "categoria_id": "",
+            "preco": 5.00,
+            "nome": "Coxinha de Frango",
+            "imagem": "https://www.fomitasgourmet.com.br/arquivos/LoginID_321/Blog/receita-tradicional-de-coxinha-1729.jpg",
+            "descricao": "Coxinha de frango com catupiry.",
+        }
+        self.produto1 = Produto.objects.create(**produto_correto_data)
+
+        produto_incorreto_data = {
+            "id": str(uuid.uuid4()),
+            # "categoria_id": "",
+            "preco": 5.00,
+            "descricao": "Coxinha de frango com catupiry.",
+        }
+        self.produto1 = Produto.objects.create(**produto_incorreto_data)
+
+        cliente_comum = {
+            "id": str(uuid.uuid4()),
+            "username": "first",
+            "first_name": "teste",
+            "last_name": "cliente",
+            "e_vendedor": False,
+            "data_nascimento": "2001-01-01",
+            "cpf": "144.111.444-89",
+            "pontos_de_fidelidade": 2,
+            "telefone": "3599996666",
+        }
+        self.cliente = Conta.objects.create(**cliente_comum)
+
+    def test_criacao_produto(self):
+        produto_correto_data = {
+            "id": str(uuid.uuid4()),
+            # "categoria_id": "",
+            "preco": 5.00,
+            "nome": "Coxinha de Frango",
+            "imagem": "https://www.fomitasgourmet.com.br/arquivos/LoginID_321/Blog/receita-tradicional-de-coxinha-1729.jpg",
+            "descricao": "Coxinha de frango com catupiry.",
+        }
+        response = self.client.post("/api/produtos/", data=produto_correto_data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_campos_preenchidos_incorretamente(self):
+        produto_incorreto_data = {
+            "id": str(uuid.uuid4()),
+            "preco": 5.00,
+            "descricao": "Coxinha de frango com catupiry.",
+        }
+        response = self.client.post("/api/produtos/", data=produto_incorreto_data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_cliente_listando_produtos(self):
+        response = self.client.get("/api/produtos/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_cliente_crianod_produto(self):
+        produto_correto_data = {
+            "id": str(uuid.uuid4()),
+            # "categoria_id": "",
+            "preco": 5.00,
+            "nome": "Coxinha de Frango",
+            "imagem": "https://www.fomitasgourmet.com.br/arquivos/LoginID_321/Blog/receita-tradicional-de-coxinha-1729.jpg",
+            "descricao": "Coxinha de frango com catupiry.",
+        }
+        tokenComum = Token.objects.create(user=self.cliente)
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + tokenComum.key)
+        response = self.client.post("/api/produtos/", data=produto_correto_data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
