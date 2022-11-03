@@ -52,6 +52,7 @@ THIRD_PARTY_APPS = [
 
 MY_APPS = [
     "contas",
+    "comandas",
     "produtos",
     "enderecos",
     "categorias",
