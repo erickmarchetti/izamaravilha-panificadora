@@ -1,7 +1,7 @@
 from rest_framework import permissions
 
 
-class VendedorOuAdminPermissions(permissions.Permission):
+class VendedorOuAdminPermissions(permissions.BasePermission):
     def has_permission(self, request, view):
         if not request.user.is_authenticated:
             return False
