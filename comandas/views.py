@@ -14,6 +14,7 @@ from comandas.permissions import (
     ApenasAdministradorFuncionarioOuDonoDaComanda,
     ApenasAdministradorOuFuncionario,
     ApenasDonoDaComanda,
+    ApenasDonoDaComandaListagem,
 )
 
 
@@ -95,7 +96,7 @@ class ComandaListarTodasAsComandas(generics.ListAPIView):
 
 class ComandaEspecifica(generics.RetrieveAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [ApenasDonoDaComanda]
+    permission_classes = [ApenasDonoDaComandaListagem]
 
     queryset = Comanda.objects.all()
     serializer_class = ListarProdutoSerializer
