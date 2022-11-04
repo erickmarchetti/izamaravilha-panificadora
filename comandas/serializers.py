@@ -3,6 +3,7 @@ from rest_framework.validators import UniqueValidator
 
 from django.core.validators import MinValueValidator
 from django.shortcuts import get_object_or_404
+from comandas.exceptions import ChaveChoiceInvalida
 
 from comandas.models import Comanda, Comanda_Produto
 from contas.models import Conta
@@ -94,3 +95,66 @@ class EditarQuantidadeProdutoSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance.comanda
+
+
+class ListarProdutoSerializer(serializers.ModelSerializer):
+    produto_id = serializers.UUIDField(
+        write_only=True,
+        validators=[
+            UniqueValidator(
+                Comanda_Produto.objects.all(), "produto já adicionado a comanda"
+            )
+        ],
+    )
+    quantidade = serializers.IntegerField(
+        write_only=True, validators=[MinValueValidator(1)]
+    )
+    produtos = serializers.SerializerMethodField(method_name="listar_produtos")
+
+    class Meta:
+        model = Comanda
+        fields = [
+            "id",
+            "status",
+            "data_criacao",
+            "conta",
+            "produto_id",
+            "quantidade",
+            "produtos",
+        ]
+        read_only_fields = ["id", "status", "data_criacao", "conta"]
+
+    def listar_produtos(self, comanda: Comanda):
+        return listar_produtos_de_uma_comanda(comanda)
+
+
+class EditarProdutoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comanda
+        fields = [
+            "id",
+            "status",
+            "data_criacao",
+            "conta",
+        ]
+        read_only_fields = [
+            "id",
+            "data_criacao",
+            "conta",
+        ]
+
+    def update(self, instance, validated_data: dict):
+        if (
+            validated_data["conta"] == instance.conta
+            and not validated_data["status"] == "fechada"
+        ):
+            raise ChaveChoiceInvalida(
+                "Valor da chave deve ser apenas de fechamento de comanda"
+            )
+
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+
+        instance.save()
+
+        return instance

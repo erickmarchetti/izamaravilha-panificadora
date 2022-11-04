@@ -6,9 +6,16 @@ from rest_framework.authentication import TokenAuthentication
 from comandas.models import Comanda, Comanda_Produto, ComandaStatus
 from comandas.serializers import (
     AdicionarOuListarProdutoSerializer,
+    EditarProdutoSerializer,
     EditarQuantidadeProdutoSerializer,
+    ListarProdutoSerializer,
 )
-from comandas.permissions import ApenasDonoDaComanda
+from comandas.permissions import (
+    ApenasAdministradorFuncionarioOuDonoDaComanda,
+    ApenasAdministradorOuFuncionario,
+    ApenasDonoDaComanda,
+    ApenasDonoDaComandaListagem,
+)
 
 
 class ComandaAdicionarProdutoView(generics.CreateAPIView):
@@ -43,22 +50,34 @@ class ComandaEditarApagarProdutoView(generics.UpdateAPIView, generics.DestroyAPI
 
 
 class ComandaEdicaoStatus(generics.UpdateAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [ApenasAdministradorFuncionarioOuDonoDaComanda]
+
     queryset = Comanda.objects.all()
-    serializer_class = ...
+    serializer_class = EditarProdutoSerializer
     lookup_url_kwarg = "comanda_id"
+
+    def perform_update(self, serializer):
+        return serializer.save(conta=self.request.user)
 
 
 class ComandaListarComandasFinalizadas(generics.ListAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [ApenasAdministradorOuFuncionario]
+
     queryset = Comanda.objects.all()
-    serializer_class = ...
+    serializer_class = ListarProdutoSerializer
 
     def get_queryset(self):
         return self.queryset.filter(status=ComandaStatus.FECHADA)
 
 
 class ComandaListarComandasAbertas(generics.ListAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [ApenasAdministradorOuFuncionario]
+
     queryset = Comanda.objects.all()
-    serializer_class = ...
+    serializer_class = ListarProdutoSerializer
 
     def get_queryset(self):
         return self.queryset.filter(status=ComandaStatus.ABERTA)
@@ -66,7 +85,7 @@ class ComandaListarComandasAbertas(generics.ListAPIView):
 
 class ComandaListarTodasAsComandas(generics.ListAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [ApenasDonoDaComanda]
 
     queryset = Comanda.objects.all()
     serializer_class = AdicionarOuListarProdutoSerializer
@@ -76,6 +95,9 @@ class ComandaListarTodasAsComandas(generics.ListAPIView):
 
 
 class ComandaEspecifica(generics.RetrieveAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [ApenasDonoDaComandaListagem]
+
     queryset = Comanda.objects.all()
-    serializer_class = ...
+    serializer_class = ListarProdutoSerializer
     lookup_url_kwarg = "comanda_id"
