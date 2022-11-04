@@ -169,3 +169,16 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "contas.Conta"
+
+import dj_database_url
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if DATABASE_URL:
+    db = dj_database_url.config(default=DATABASE_URL)
+    DATABASES["default"].update(db)
+
+    DEBUG = False
+
+
+ALLOWED_HOSTS = ["deploy-business.herokuapp.com", "localhost"]
