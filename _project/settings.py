@@ -181,4 +181,4 @@ if DATABASE_URL:
     DEBUG = False
 
 
-ALLOWED_HOSTS = ["deploy-business.herokuapp.com", "localhost"]
+ALLOWED_HOSTS = ["izamaravilha-project.herokuapp.com", "localhost"]
