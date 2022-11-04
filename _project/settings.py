@@ -48,6 +48,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "drf_spectacular",
+    "cpf_field",
 ]
 
 MY_APPS = [
