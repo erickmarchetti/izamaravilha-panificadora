@@ -1,1 +1,1 @@
-web: gunicorn izamaravilha-project.wsgi --log-level debug
+web: gunicorn izamaravilha-project:app
