@@ -7,8 +7,6 @@ from rest_framework.authentication import TokenAuthentication
 from produtos.serializers import ProdutoSerializer
 import ipdb
 
-# Create your views here.
-
 
 class PatchDeleteProductView(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [TokenAuthentication]
@@ -35,9 +33,8 @@ class GetOnlyProductsCategory(generics.ListAPIView):
 
     def get_queryset(self):
         categoria_id = self.kwargs["pk"]
-        # ipdb.set_trace()
+
         return self.queryset.filter(categoria_id=categoria_id)
-        # CATEGORIA RETIORNA MAS NOA CONSIGO CRIAR MAIS UM PRODUTO COM A MESMA CATEGORIA
 
 
 class PegarProdutosRecemAtualizados(generics.ListAPIView):

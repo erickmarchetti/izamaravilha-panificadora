@@ -1,14 +1,16 @@
 from django.test import TestCase
-from categorias.models import Categoria
-from produtos.models import Produto
-from contas.models import Conta
-import uuid
+
 from rest_framework.test import APITestCase
 from rest_framework.views import status
 from rest_framework.authtoken.models import Token
-import ipdb
 
-# Create your tests here.
+from categorias.models import Categoria
+from produtos.models import Produto
+from contas.models import Conta
+
+import uuid
+
+import ipdb
 
 
 class TesteModelsProdutos(TestCase):
@@ -71,11 +73,10 @@ class TesteViewProdutos(APITestCase):
             "id": str(uuid.uuid4()),
             "preco": 5.00,
             "nome": "Coxinha de Frango",
-            # "categoria": {"nome": "graos"},
             "imagem": "https://www.fomitasgourmet.com.br/arquivos/LoginID_321/Blog/receita-tradicional-de-coxinha-1729.jpg",
             "descricao": "Coxinha de frango com catupiry.",
         }
-        # cls.categoria = Categoria.objects.create(nome="teste categoria 4")
+
         cls.categoria2 = Categoria.objects.create(nome="graos")
 
         cls.produto1 = Produto.objects.create(
@@ -136,12 +137,10 @@ class TesteViewProdutos(APITestCase):
         }
 
         criar_vendedor = Conta.objects.create_user(**self.vendedor)
-        # cls.produto1 = Produto.objects.create(
-        #     **cls.produto_correto_data, categoria=cls.categoria
-        # )
+
         tokenVendedor = Token.objects.create(user=criar_vendedor)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + tokenVendedor.key)
-        # self.produto_correto_data["categoria"] = self.categoria2
+
         response = self.client.post("/api/produtos/", data=produto_teste)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
