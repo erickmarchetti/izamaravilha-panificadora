@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 
 
 class ComandaStatus(models.TextChoices):
@@ -9,6 +10,7 @@ class ComandaStatus(models.TextChoices):
 
 
 class Comanda(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     status = models.CharField(
         max_length=30, choices=ComandaStatus.choices, default=ComandaStatus.ABERTA
     )
@@ -20,6 +22,7 @@ class Comanda(models.Model):
 
 
 class Comanda_Produto(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     quantidade = models.PositiveIntegerField()
 
     comanda = models.ForeignKey(

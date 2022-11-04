@@ -1,10 +1,9 @@
 from rest_framework import generics
 from .models import Categoria
 
-from categorias.serializer import SerializerCategoria
+from categorias.serializers import SerializerCategoria
 from rest_framework.authentication import TokenAuthentication
 from .permissions import PermissaoLerOuApenasFuncionario
-
 
 
 class CategoriasListarOuCriar(generics.ListCreateAPIView):
