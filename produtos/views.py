@@ -1,6 +1,6 @@
 from rest_framework import generics
 from categorias.models import Categoria
-from categorias.serializer import SerializerCategoria
+from categorias.serializers import SerializerCategoria
 from produtos.models import Produto
 from produtos.permissions import VendedorOuAdminPermissions
 from rest_framework.authentication import TokenAuthentication
