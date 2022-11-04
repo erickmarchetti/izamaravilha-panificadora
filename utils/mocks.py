@@ -80,3 +80,13 @@ usuario_comum = {
         "ponto_de_referencia": "Proximo ao kilão verduras frescas",
     },
 }
+
+
+endereco_mockado = {
+    "rua": "Avenida Brasil",
+    "numero": "2256",
+    "complemento": "Apartamento 502",
+    "cidade": "Bauru",
+    "estado": "SP",
+    "ponto_de_referencia": "Ao lado do Boteco do Marcinho",
+}
