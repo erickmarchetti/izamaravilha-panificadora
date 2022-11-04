@@ -1,72 +1,47 @@
 from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
+from utils.mocks import usuario_comum, usuario_funcionario, usuario_superuser
+from rest_framework import status
 
+from categorias.models import Categoria
 from contas.models import Conta
 from produtos.models import Produto
 
 
 class TesteIntegracaoComanda(APITestCase):
     def setUp(self) -> None:
-        usuario_superuser = {
-            "username": "jorge",
-            "first_name": "jorge",
-            "last_name": "junior",
-            "telefone": "99999999999",
-            "cpf": "99999999999",
-            "data_nascimento": "1997-01-01",
-            "password": "1234",
-        }
+
         self.superuser = Conta.objects.create_superuser(**usuario_superuser)
 
-        usuario_funcionario = {
-            "username": "jorge",
-            "password": "1234",
-            "first_name": "jorge",
-            "last_name": "junior",
-            "telefone": "99999999999",
-            "cpf": "99999999999",
-            "data_nascimento": "1997-01-01",
-            "endereco": {
-                "rua": "Rua rau ruau",
-                "numero": "50",
-                "complemento": "bloco 20",
-                "cidade": "Belo horizonte",
-                "estado": "Minas Gerais",
-                "ponto_de_referencia": "Proximo ao aviário 101",
-            },
-        }
         self.funcionario = Conta.objects.create_user(**usuario_funcionario)
 
-        usuario_comum = {
-            "username": "patrick",
-            "password": "1234",
-            "first_name": "patrick",
-            "last_name": "junior",
-            "telefone": "99999999999",
-            "cpf": "99999999999",
-            "data_nascimento": "1999-01-01",
-            "endereco": {
-                "rua": "Rua sim",
-                "numero": "50",
-                "complemento": "bloco 50",
-                "cidade": "Paraná",
-                "estado": "Curitiba",
-                "ponto_de_referencia": "Proximo ao kilão verduras frescas",
-            },
-        }
         self.comum = Conta.objects.create_user(**usuario_comum)
 
-        produto_1 = {
+        produto_1_valores = {
             "preco": 9.00,
             "nome": "Requeijão Cremoso",
+            "categoria": Categoria.objects.create(**{"name": "laticínios"}),
             "imagem": "requeijaocremoso.jpg",
             "descricao": "Saboroso e ótimo para acompanhar com pães fresquinhos",
         }
         """
         PRODUTO TEM QUE SER CRIADO, JUNTO COM O PRODUTO VEM A CATEGORIA.
         """
+        self.produto_1 = Produto.objects.create(**produto_1_valores)
 
     def test_tentando_criar_uma_comanda(self):
         token = Token.objects.create(self.comum)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
-        valores = {}
+        valores = {
+            "produto_id": self.produto_1,
+            "quantidade": 2,
+        }
+        response = self.client.post("/api/comanda/", data=valores)
+        expected_status = status.HTTP_201_CREATED
+
+        self.assertEqual(expected_status, response.status_code)
+        # self.assertIn(response.data, "id")
+        # self.assertIn(response.data, "status")
+        # self.assertIn(response.data, "data_criacao")
+        # self.assertIn(response.data, "conta")
+        # self.assertIn(response.data, "produtos")
