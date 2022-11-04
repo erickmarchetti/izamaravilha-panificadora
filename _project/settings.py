@@ -164,7 +164,7 @@ AUTH_USER_MODEL = "contas.Conta"
 
 environ.Env.read_env(BASE_DIR / '.env')
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_PORT = env('EMAIL_PORT')
