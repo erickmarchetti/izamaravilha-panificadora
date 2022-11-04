@@ -30,8 +30,6 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["izamaravilha-panificadora.herokuapp.com", "localhost"]
-
 
 # Application definition
 
@@ -113,18 +111,6 @@ default_db = (
 )
 
 DATABASES = {"default": default_db}
-
-import dj_database_url
-
-DATABASE_URL = os.environ.get("DATABASE_URL")
-
-if DATABASE_URL:
-    db_from_env = dj_database_url.config(
-        default="postgres://njuelejmxpzsmo:b67d371a550c5a7c2796781edd7027f62f147a86bb8ff44e47a48b88dc067125@ec2-52-23-131-232.compute-1.amazonaws.com:5432/dc98d0b32ifm2p"
-    )
-    DATABASES["default"].update(db_from_env)
-
-    DEBUG = False
 
 
 # Password validation
