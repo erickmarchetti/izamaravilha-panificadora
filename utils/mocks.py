@@ -90,3 +90,12 @@ endereco_mockado = {
     "estado": "SP",
     "ponto_de_referencia": "Ao lado do Boteco do Marcinho",
 }
+
+produto_mockado = {
+    "preco": 10.50,
+    "nome": "Bolo de Chocolate",
+    "imagem": "só testando",
+    "descricao": "Um delicioso bolo de chocolate com morangos.",
+}
+
+categoria_mockada = {"nome": "categoria mockada"}
