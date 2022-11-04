@@ -23,6 +23,7 @@ class ContaClienteSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "username",
+            "email",
             "password",
             "first_name",
             "last_name",
@@ -58,6 +59,7 @@ class ContaFuncionarioSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "username",
+            "email",
             "password",
             "first_name",
             "last_name",
