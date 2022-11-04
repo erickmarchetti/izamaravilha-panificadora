@@ -5,6 +5,8 @@ from enderecos.models import Endereco
 from .models import Conta
 from django.contrib.auth.hashers import make_password
 
+from django.core.mail import send_mail
+from django.conf import settings
 
 class LoginSerializer(serializers.ModelSerializer):
 
@@ -40,10 +42,20 @@ class ContaClienteSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
 
         dados_endereco = validated_data.pop('endereco')
+        dados_primeiro_nome = validated_data['first_name']
+        dados_ultimo_nome = validated_data['last_name']
 
         usuario = Conta.objects.create_user(**validated_data)
 
         Endereco.objects.create(**dados_endereco, conta=usuario)
+
+        send_mail(subject= 'NÃO RESPONDA - Confirmação de Conta Izamaravilha Panificadora',
+            message= f'Olá {dados_primeiro_nome} {dados_ultimo_nome} seja bem-vindo(a) a Izamaravilha Panificadora',
+            from_email= settings.EMAIL_HOST_USER,
+            recipient_list= [validated_data['email']],
+            fail_silently=False,
+        )
+
 
         return usuario
 
@@ -74,8 +86,8 @@ class ContaFuncionarioSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "is_employee", "pontos_de_fidelidade"]
 
     def create(self, validated_data):
-        
-        dados_endereco = validated_data.pop('endereco')
+
+        dados_endereco = validated_data.pop('endereco')        
 
         usuario = Conta.objects.create_user(**validated_data, is_employee=True)
 
