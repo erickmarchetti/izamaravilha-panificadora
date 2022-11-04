@@ -1,6 +1,7 @@
 import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from cpf_field.models import CPFField
 
 
 class Conta(AbstractUser):
@@ -11,7 +12,7 @@ class Conta(AbstractUser):
     last_name = models.CharField(max_length=120)
     is_employee = models.BooleanField(default=False)
     data_nascimento = models.DateField()
-    cpf = models.CharField(max_length=11, unique=True)
+    cpf = CPFField('cpf', unique=True)
     telefone = models.CharField(max_length=15)
     pontos_de_fidelidade = models.IntegerField(default=0)
 
