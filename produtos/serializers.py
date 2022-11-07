@@ -34,3 +34,16 @@ class ProdutoSerializer(serializers.ModelSerializer):
 
         estoque = Estoque.objects.create(**dados_estoque, produto=resultado_produto)
         return resultado_produto
+
+    def update(self, instance, validated_data: dict):
+        cortando_categoria = validated_data.pop("categoria")
+        cortando_estoque = validated_data.pop("estoque")
+        if cortando_categoria:
+            pegando_ou_criando = Categoria.objects.get_or_create(**cortando_categoria)[
+                0
+            ]
+            instance.categoria = pegando_ou_criando
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+        instance.save()
+        return instance
