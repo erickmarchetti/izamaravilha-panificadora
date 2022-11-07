@@ -7,6 +7,8 @@ certifi==2022.9.24
 cffi==1.15.1
 charset-normalizer==2.1.1
 click==8.1.3
+colorama==0.4.6
+confusable-homoglyphs==3.2.0
 coreapi==2.3.3
 coreschema==0.0.4
 coverage==6.5.0
@@ -16,6 +18,9 @@ defusedxml==0.7.1
 dj-database-url==1.0.0
 Django==4.1.2
 django-cpf==0.1.0
+django-environ==0.9.0
+django-registration==3.3
+Django-Verify-Email==2.0.3
 django-templated-mail==1.1.1
 djangorestframework==3.14.0
 djangorestframework-simplejwt==4.8.0
@@ -33,7 +38,6 @@ Jinja2==3.1.2
 jsonschema==4.16.0
 MarkupSafe==2.1.1
 matplotlib-inline==0.1.6
-model-bakery==1.9.0
 mypy-extensions==0.4.3
 oauthlib==3.2.2
 parso==0.8.3
@@ -63,6 +67,7 @@ stack-data==0.5.1
 toml==0.10.2
 tomli==2.0.1
 traitlets==5.4.0
+tzdata==2022.6
 uritemplate==4.1.1
 urllib3==1.26.12
 wcwidth==0.2.5
