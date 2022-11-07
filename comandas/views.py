@@ -84,7 +84,7 @@ class ComandaListarComandasAbertas(generics.ListAPIView):
 
 class ComandaListarTodasAsComandas(generics.ListAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [ApenasDonoDaComanda]
+    permission_classes = [IsAuthenticated]
 
     queryset = Comanda.objects.all()
     serializer_class = AdicionarOuListarProdutoSerializer
