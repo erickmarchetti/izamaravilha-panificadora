@@ -2,13 +2,13 @@ from rest_framework import serializers
 from categorias.models import Categoria
 from produtos.models import Produto
 from categorias.serializers import SerializerCategoriaProduto
+from estoque.serializers import EstoqueSerializer
+from estoque.models import Estoque
 
 
 class ProdutoSerializer(serializers.ModelSerializer):
+    estoque = EstoqueSerializer()
     categoria = SerializerCategoriaProduto()
-    produtosRecentes = serializers.SerializerMethodField(
-        method_name="atualizar_pelo_mais_recente_produto"
-    )
 
     class Meta:
         model = Produto
@@ -19,11 +19,18 @@ class ProdutoSerializer(serializers.ModelSerializer):
             "nome",
             "imagem",
             "descricao",
+            "estoque",
         ]
         read_only_fields = ["id"]
 
     def create(self, validated_data):
-        dados = validated_data.pop("categoria")
-        categoria = Categoria.objects.get_or_create(**dados)[0]
-        resultado = Produto.objects.create(**validated_data, categoria=categoria)
-        return resultado
+        dados_estoque = validated_data.pop("estoque")
+        dados_categoria = validated_data.pop("categoria")
+
+        categoria = Categoria.objects.get_or_create(**dados_categoria)[0]
+        resultado_produto = Produto.objects.create(
+            **validated_data, categoria=categoria
+        )
+
+        estoque = Estoque.objects.create(**dados_estoque, produto=resultado_produto)
+        return resultado_produto
