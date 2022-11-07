@@ -97,3 +97,80 @@ class TesteIntegracaoComanda(APITestCase):
         self.assertIn("data_criacao", response_produto.data)
         self.assertIn("conta", response_produto.data)
         self.assertIn("produtos", response_produto.data)
+
+    def test_permite_alterar_o_status_da_comanda(self):
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_comum)
+        valores = {
+            "produto_id": self.produto_1.id,
+            "quantidade": 2,
+        }
+        response_produto = self.client.post("/api/comanda/", data=valores)
+        alteracao = {"status": "fechada"}
+        response_comanda = self.client.patch(
+            f'/api/comanda/{response_produto.data["id"]}/status/', data=alteracao
+        )
+        expected_status = status.HTTP_200_OK
+
+        self.assertEqual(expected_status, response_comanda.status_code)
+        self.assertEqual(Comanda.objects.count(), 1)
+        self.assertIn("status", response_comanda.data)
+        self.assertIn("id", response_comanda.data)
+        self.assertIn("status", response_comanda.data)
+        self.assertEqual(response_comanda.data["status"], "fechada")
+        self.assertIn("data_criacao", response_comanda.data)
+        self.assertIn("conta", response_comanda.data)
+        self.assertNotIn("produtos", response_comanda.data)
+
+    def test_permite_listagem_de_todas_as_comandas_finalizadas(self):
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_funcionario)
+        valores = {
+            "produto_id": self.produto_1.id,
+            "quantidade": 2,
+        }
+        response_produto = self.client.post("/api/comanda/", data=valores)
+        alteracao = {"status": "fechada"}
+        self.client.patch(
+            f'/api/comanda/{response_produto.data["id"]}/status/', data=alteracao
+        )
+        response_comanda = self.client.get("/api/comanda/finalizadas/")
+        expected_status = status.HTTP_200_OK
+
+        self.assertEqual(expected_status, response_comanda.status_code)
+        self.assertEqual(Comanda.objects.count(), 1)
+        self.assertEqual(response_comanda.data[0]["status"], "fechada")
+
+    def test_permite_listagem_de_todas_as_comandas_abertas(self):
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_funcionario)
+        valores1 = {
+            "produto_id": self.produto_1.id,
+            "quantidade": 2,
+        }
+        valores2 = {
+            "produto_id": self.produto_1.id,
+            "quantidade": 2,
+        }
+        self.client.post("/api/comanda/", data=valores1)
+        self.client.post("/api/comanda/", data=valores2)
+        response_comanda = self.client.get("/api/comanda/abertas/")
+        expected_status = status.HTTP_200_OK
+
+        self.assertEqual(expected_status, response_comanda.status_code)
+        self.assertEqual(Comanda.objects.count(), 2)
+
+    def test_permite_listagem_de_uma_comanda_específica(self):
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_funcionario)
+        valores1 = {
+            "produto_id": self.produto_1.id,
+            "quantidade": 2,
+        }
+        valores2 = {
+            "produto_id": self.produto_1.id,
+            "quantidade": 2,
+        }
+        produto = self.client.post("/api/comanda/", data=valores1)
+        self.client.post("/api/comanda/", data=valores2)
+        response_comanda = self.client.get(f'/api/comanda/{produto["id"]}/')
+        expected_status = status.HTTP_200_OK
+
+        self.assertEqual(expected_status, response_comanda.status_code)
+        self.assertEqual(Comanda.objects.count(), 1)
