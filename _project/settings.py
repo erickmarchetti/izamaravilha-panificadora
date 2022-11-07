@@ -30,8 +30,6 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -96,6 +94,7 @@ WSGI_APPLICATION = "_project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+
 default_db = (
     {
         "ENGINE": "django.db.backends.sqlite3",
@@ -157,3 +156,16 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "contas.Conta"
+
+import dj_database_url
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if DATABASE_URL:
+    db = dj_database_url.config(default=DATABASE_URL)
+    DATABASES["default"].update(db)
+
+    DEBUG = False
+
+
+ALLOWED_HOSTS = ["izamaravilha-project.herokuapp.com", "localhost"]
