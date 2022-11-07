@@ -32,3 +32,5 @@ class TesteModelsProdutos(TestCase):
         self.assertEqual(self.salgado.nome, self.salgado_data["nome"])
         self.assertEqual(self.salgado.imagem, self.salgado_data["imagem"])
         self.assertEqual(self.salgado.descricao, self.salgado_data["descricao"])
+
+   
