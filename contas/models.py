@@ -9,6 +9,7 @@ class Conta(AbstractUser):
 
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     username = models.CharField(max_length=30, unique=True)
+    email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=90)
     last_name = models.CharField(max_length=120)
     is_employee = models.BooleanField(default=False)
@@ -19,6 +20,7 @@ class Conta(AbstractUser):
     pontos_de_fidelidade = models.IntegerField(default=0)
 
     REQUIRED_FIELDS = [
+        "email",
         "first_name",
         "last_name",
         "data_nascimento",
