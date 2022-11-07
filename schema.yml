@@ -6,9 +6,9 @@ info:
 paths:
   /api/categorias/:
     get:
-      operationId: api_categorias_list
+      operationId: categorias_list
       tags:
-      - api
+      - Categoria
       security:
       - tokenAuth: []
       responses:
@@ -21,9 +21,9 @@ paths:
                   $ref: '#/components/schemas/SerializerCategoria'
           description: ''
     post:
-      operationId: api_categorias_create
+      operationId: categorias_create
       tags:
-      - api
+      - Categoria
       requestBody:
         content:
           application/json:
@@ -47,7 +47,7 @@ paths:
           description: ''
   /api/categorias/{id}/:
     get:
-      operationId: api_categorias_retrieve
+      operationId: categorias_retrieve
       parameters:
       - in: path
         name: id
@@ -56,7 +56,7 @@ paths:
         description: A unique integer value identifying this categoria.
         required: true
       tags:
-      - api
+      - Categoria
       security:
       - tokenAuth: []
       responses:
@@ -67,7 +67,7 @@ paths:
                 $ref: '#/components/schemas/SerializerCategoria'
           description: ''
     put:
-      operationId: api_categorias_update
+      operationId: categorias_update
       parameters:
       - in: path
         name: id
@@ -76,7 +76,7 @@ paths:
         description: A unique integer value identifying this categoria.
         required: true
       tags:
-      - api
+      - Categoria
       requestBody:
         content:
           application/json:
@@ -99,7 +99,7 @@ paths:
                 $ref: '#/components/schemas/SerializerCategoria'
           description: ''
     patch:
-      operationId: api_categorias_partial_update
+      operationId: categorias_partial_update
       parameters:
       - in: path
         name: id
@@ -108,7 +108,7 @@ paths:
         description: A unique integer value identifying this categoria.
         required: true
       tags:
-      - api
+      - Categoria
       requestBody:
         content:
           application/json:
@@ -131,9 +131,9 @@ paths:
           description: ''
   /api/comanda/:
     post:
-      operationId: api_comanda_create
+      operationId: comanda_create
       tags:
-      - api
+      - Comanda
       requestBody:
         content:
           application/json:
@@ -157,7 +157,7 @@ paths:
           description: ''
   /api/comanda/{comanda_id}/:
     get:
-      operationId: api_comanda_retrieve
+      operationId: comanda_retrieve
       parameters:
       - in: path
         name: comanda_id
@@ -167,7 +167,7 @@ paths:
         description: A UUID string identifying this comanda.
         required: true
       tags:
-      - api
+      - Comanda
       security:
       - tokenAuth: []
       responses:
@@ -179,7 +179,7 @@ paths:
           description: ''
   /api/comanda/{comanda_id}/produto/{produto_id}/:
     put:
-      operationId: api_comanda_produto_update
+      operationId: comanda_produto_update
       parameters:
       - in: path
         name: comanda_id
@@ -192,7 +192,7 @@ paths:
           type: string
         required: true
       tags:
-      - api
+      - Comanda
       requestBody:
         content:
           application/json:
@@ -215,7 +215,7 @@ paths:
                 $ref: '#/components/schemas/EditarQuantidadeProduto'
           description: ''
     patch:
-      operationId: api_comanda_produto_partial_update
+      operationId: comanda_produto_partial_update
       parameters:
       - in: path
         name: comanda_id
@@ -228,7 +228,7 @@ paths:
           type: string
         required: true
       tags:
-      - api
+      - Comanda
       requestBody:
         content:
           application/json:
@@ -250,7 +250,7 @@ paths:
                 $ref: '#/components/schemas/EditarQuantidadeProduto'
           description: ''
     delete:
-      operationId: api_comanda_produto_destroy
+      operationId: comanda_produto_destroy
       parameters:
       - in: path
         name: comanda_id
@@ -263,7 +263,7 @@ paths:
           type: string
         required: true
       tags:
-      - api
+      - Comanda
       security:
       - tokenAuth: []
       responses:
@@ -271,7 +271,7 @@ paths:
           description: No response body
   /api/comanda/{comanda_id}/status/:
     put:
-      operationId: api_comanda_status_update
+      operationId: comanda_status_update
       parameters:
       - in: path
         name: comanda_id
@@ -281,7 +281,7 @@ paths:
         description: A UUID string identifying this comanda.
         required: true
       tags:
-      - api
+      - Comanda
       requestBody:
         content:
           application/json:
@@ -303,7 +303,7 @@ paths:
                 $ref: '#/components/schemas/EditarProduto'
           description: ''
     patch:
-      operationId: api_comanda_status_partial_update
+      operationId: comanda_status_partial_update
       parameters:
       - in: path
         name: comanda_id
@@ -313,7 +313,7 @@ paths:
         description: A UUID string identifying this comanda.
         required: true
       tags:
-      - api
+      - Comanda
       requestBody:
         content:
           application/json:
@@ -336,9 +336,9 @@ paths:
           description: ''
   /api/comanda/abertas/:
     get:
-      operationId: api_comanda_abertas_list
+      operationId: comanda_abertas_list
       tags:
-      - api
+      - Comanda
       security:
       - tokenAuth: []
       responses:
@@ -352,9 +352,9 @@ paths:
           description: ''
   /api/comanda/finalizadas/:
     get:
-      operationId: api_comanda_finalizadas_list
+      operationId: comanda_finalizadas_list
       tags:
-      - api
+      - Comanda
       security:
       - tokenAuth: []
       responses:
@@ -368,9 +368,9 @@ paths:
           description: ''
   /api/comanda/user/:
     get:
-      operationId: api_comanda_user_list
+      operationId: comanda_user_list
       tags:
-      - api
+      - Comanda
       security:
       - tokenAuth: []
       responses:
@@ -384,9 +384,9 @@ paths:
           description: ''
   /api/endereco/:
     get:
-      operationId: api_endereco_list
+      operationId: endereco_list
       tags:
-      - api
+      - Endereço
       security:
       - tokenAuth: []
       responses:
@@ -399,9 +399,9 @@ paths:
                   $ref: '#/components/schemas/EnderecoDetalhado'
           description: ''
     post:
-      operationId: api_endereco_create
+      operationId: endereco_create
       tags:
-      - api
+      - Endereço
       requestBody:
         content:
           application/json:
@@ -425,7 +425,7 @@ paths:
           description: ''
   /api/endereco/{id}/:
     get:
-      operationId: api_endereco_retrieve
+      operationId: endereco_retrieve
       parameters:
       - in: path
         name: id
@@ -435,7 +435,7 @@ paths:
         description: A UUID string identifying this endereco.
         required: true
       tags:
-      - api
+      - Endereço
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -448,7 +448,7 @@ paths:
                 $ref: '#/components/schemas/EnderecoDetalhado'
           description: ''
     put:
-      operationId: api_endereco_update
+      operationId: endereco_update
       parameters:
       - in: path
         name: id
@@ -458,16 +458,32 @@ paths:
         description: A UUID string identifying this endereco.
         required: true
       tags:
-      - api
+      - Endereço
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnderecoDetalhado'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnderecoDetalhado'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnderecoDetalhado'
+        required: true
       security:
       - cookieAuth: []
       - basicAuth: []
       - {}
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnderecoDetalhado'
+          description: ''
     patch:
-      operationId: api_endereco_partial_update
+      operationId: endereco_partial_update
       parameters:
       - in: path
         name: id
@@ -477,7 +493,7 @@ paths:
         description: A UUID string identifying this endereco.
         required: true
       tags:
-      - api
+      - Endereço
       requestBody:
         content:
           application/json:
@@ -501,7 +517,7 @@ paths:
                 $ref: '#/components/schemas/EnderecoDetalhado'
           description: ''
     delete:
-      operationId: api_endereco_destroy
+      operationId: endereco_destroy
       parameters:
       - in: path
         name: id
@@ -511,7 +527,7 @@ paths:
         description: A UUID string identifying this endereco.
         required: true
       tags:
-      - api
+      - Endereço
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -521,9 +537,9 @@ paths:
           description: No response body
   /api/estoque/:
     get:
-      operationId: api_estoque_list
+      operationId: estoque_list
       tags:
-      - api
+      - Estoque
       security:
       - tokenAuth: []
       responses:
@@ -537,7 +553,7 @@ paths:
           description: ''
   /api/estoque/{produto_id}/:
     put:
-      operationId: api_estoque_update
+      operationId: estoque_update
       parameters:
       - in: path
         name: produto_id
@@ -547,7 +563,7 @@ paths:
         description: A UUID string identifying this produto.
         required: true
       tags:
-      - api
+      - Estoque
       requestBody:
         content:
           application/json:
@@ -570,7 +586,7 @@ paths:
                 $ref: '#/components/schemas/AtualizarEstoque'
           description: ''
     patch:
-      operationId: api_estoque_partial_update
+      operationId: estoque_partial_update
       parameters:
       - in: path
         name: produto_id
@@ -580,7 +596,7 @@ paths:
         description: A UUID string identifying this produto.
         required: true
       tags:
-      - api
+      - Estoque
       requestBody:
         content:
           application/json:
@@ -603,9 +619,9 @@ paths:
           description: ''
   /api/funcionario/:
     post:
-      operationId: api_funcionario_create
+      operationId: funcionario_create
       tags:
-      - api
+      - Conta
       requestBody:
         content:
           application/json:
@@ -629,9 +645,9 @@ paths:
           description: ''
   /api/login/:
     post:
-      operationId: api_login_create
+      operationId: login_create
       tags:
-      - api
+      - login
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -656,9 +672,9 @@ paths:
           description: ''
   /api/produtos/:
     get:
-      operationId: api_produtos_list
+      operationId: produtos_list
       tags:
-      - api
+      - Produtos
       security:
       - tokenAuth: []
       responses:
@@ -671,9 +687,9 @@ paths:
                   $ref: '#/components/schemas/Produto'
           description: ''
     post:
-      operationId: api_produtos_create
+      operationId: produtos_create
       tags:
-      - api
+      - Produtos
       requestBody:
         content:
           application/json:
@@ -697,7 +713,7 @@ paths:
           description: ''
   /api/produtos/{id}/:
     get:
-      operationId: api_produtos_retrieve
+      operationId: produtos_retrieve
       parameters:
       - in: path
         name: id
@@ -707,7 +723,7 @@ paths:
         description: A UUID string identifying this produto.
         required: true
       tags:
-      - api
+      - Produtos
       security:
       - tokenAuth: []
       responses:
@@ -718,7 +734,7 @@ paths:
                 $ref: '#/components/schemas/Produto'
           description: ''
     put:
-      operationId: api_produtos_update
+      operationId: produtos_update
       parameters:
       - in: path
         name: id
@@ -728,7 +744,7 @@ paths:
         description: A UUID string identifying this produto.
         required: true
       tags:
-      - api
+      - Produtos
       requestBody:
         content:
           application/json:
@@ -751,7 +767,7 @@ paths:
                 $ref: '#/components/schemas/Produto'
           description: ''
     patch:
-      operationId: api_produtos_partial_update
+      operationId: produtos_partial_update
       parameters:
       - in: path
         name: id
@@ -761,7 +777,7 @@ paths:
         description: A UUID string identifying this produto.
         required: true
       tags:
-      - api
+      - Produtos
       requestBody:
         content:
           application/json:
@@ -783,7 +799,7 @@ paths:
                 $ref: '#/components/schemas/Produto'
           description: ''
     delete:
-      operationId: api_produtos_destroy
+      operationId: produtos_destroy
       parameters:
       - in: path
         name: id
@@ -793,7 +809,7 @@ paths:
         description: A UUID string identifying this produto.
         required: true
       tags:
-      - api
+      - Produtos
       security:
       - tokenAuth: []
       responses:
@@ -801,7 +817,7 @@ paths:
           description: No response body
   /api/produtos/categoria/{id}/:
     get:
-      operationId: api_produtos_categoria_list
+      operationId: produtos_categoria_list
       parameters:
       - in: path
         name: id
@@ -811,7 +827,7 @@ paths:
         description: A UUID string identifying this produto.
         required: true
       tags:
-      - api
+      - Produtos
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -827,9 +843,9 @@ paths:
           description: ''
   /api/produtos/recentes/:
     get:
-      operationId: api_produtos_recentes_list
+      operationId: produtos_recentes_list
       tags:
-      - api
+      - Produtos
       security:
       - cookieAuth: []
       - basicAuth: []
@@ -845,9 +861,9 @@ paths:
           description: ''
   /api/usuario/:
     post:
-      operationId: api_usuario_create
+      operationId: usuario_create
       tags:
-      - api
+      - Conta
       requestBody:
         content:
           application/json:
@@ -873,7 +889,7 @@ paths:
           description: ''
   /api/usuario/{usuario_id}/:
     get:
-      operationId: api_usuario_retrieve
+      operationId: usuario_retrieve
       parameters:
       - in: path
         name: usuario_id
@@ -881,7 +897,7 @@ paths:
           type: string
         required: true
       tags:
-      - api
+      - Conta
       security:
       - tokenAuth: []
       responses:
@@ -892,7 +908,7 @@ paths:
                 $ref: '#/components/schemas/ContaCliente'
           description: ''
     delete:
-      operationId: api_usuario_destroy
+      operationId: usuario_destroy
       parameters:
       - in: path
         name: usuario_id
@@ -900,7 +916,7 @@ paths:
           type: string
         required: true
       tags:
-      - api
+      - Conta
       security:
       - tokenAuth: []
       responses:
@@ -908,7 +924,7 @@ paths:
           description: No response body
   /api/usuario/{usuario_id}/atualizar/:
     put:
-      operationId: api_usuario_atualizar_update
+      operationId: usuario_atualizar_update
       parameters:
       - in: path
         name: usuario_id
@@ -916,7 +932,7 @@ paths:
           type: string
         required: true
       tags:
-      - api
+      - Conta
       requestBody:
         content:
           application/json:
@@ -939,7 +955,7 @@ paths:
                 $ref: '#/components/schemas/AtualizarPropriaConta'
           description: ''
     patch:
-      operationId: api_usuario_atualizar_partial_update
+      operationId: usuario_atualizar_partial_update
       parameters:
       - in: path
         name: usuario_id
@@ -947,7 +963,7 @@ paths:
           type: string
         required: true
       tags:
-      - api
+      - Conta
       requestBody:
         content:
           application/json:
@@ -970,9 +986,9 @@ paths:
           description: ''
   /api/usuario/contas/:
     get:
-      operationId: api_usuario_contas_list
+      operationId: usuario_contas_list
       tags:
-      - api
+      - Conta
       security:
       - tokenAuth: []
       responses:
@@ -983,6 +999,71 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ContaCliente'
+          description: ''
+  /api/usuario/validacao/{secret_key}/:
+    put:
+      operationId: usuario_validacao_update
+      parameters:
+      - in: path
+        name: secret_key
+        schema:
+          type: string
+        required: true
+      tags:
+      - Conta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerificarConta'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerificarConta'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerificarConta'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificarConta'
+          description: ''
+    patch:
+      operationId: usuario_validacao_partial_update
+      parameters:
+      - in: path
+        name: secret_key
+        schema:
+          type: string
+        required: true
+      tags:
+      - Conta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedVerificarConta'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedVerificarConta'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedVerificarConta'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificarConta'
           description: ''
 components:
   schemas:
@@ -1176,6 +1257,9 @@ components:
           title: Superuser status
           description: Designates that this user has all permissions without explicitly
             assigning them.
+        is_active:
+          type: boolean
+          default: false
         pontos_de_fidelidade:
           type: integer
           readOnly: true
@@ -1586,6 +1670,14 @@ components:
         nome:
           type: string
           maxLength: 20
+    PatchedVerificarConta:
+      type: object
+      properties:
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
     Produto:
       type: object
       properties:
@@ -1647,6 +1739,14 @@ components:
       - em rota de entrega
       - entregue
       type: string
+    VerificarConta:
+      type: object
+      properties:
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
   securitySchemes:
     basicAuth:
       type: http

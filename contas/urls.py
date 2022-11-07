@@ -25,4 +25,12 @@ urlpatterns = [
         views.AtualizarPropriaContaView.as_view(),
         name="user-update-self-client",
     ),
+    
+    path(
+        "usuario/validacao/<str:secret_key>/",
+        views.ValidarEmailView.as_view(),
+        name="validar-email",
+    ),
+
+    
 ]

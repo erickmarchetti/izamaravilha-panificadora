@@ -178,6 +178,7 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "API da Panificadora Izamaravilha",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
+    'SCHEMA_PATH_PREFIX': r'/api/',
     # OTHER SETTINGS
 }
 
