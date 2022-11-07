@@ -35,8 +35,6 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -53,6 +51,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "drf_spectacular",
+    "cpf_field",
 ]
 
 MY_APPS = [
@@ -98,6 +97,7 @@ WSGI_APPLICATION = "_project.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+
 
 default_db = (
     {
@@ -161,7 +161,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "contas.Conta"
 
-
 environ.Env.read_env(BASE_DIR / '.env')
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -170,3 +169,16 @@ EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_PORT = env('EMAIL_PORT')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+
+import dj_database_url
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if DATABASE_URL:
+    db = dj_database_url.config(default=DATABASE_URL)
+    DATABASES["default"].update(db)
+
+    DEBUG = False
+
+
+ALLOWED_HOSTS = ["izamaravilha-project.herokuapp.com", "localhost"]
