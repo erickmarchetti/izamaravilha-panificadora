@@ -1,5 +1,8 @@
+import ipdb
+
 from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
+from comandas.models import Comanda
 from utils.mocks import (
     usuario_comum,
     usuario_funcionario,
@@ -37,8 +40,6 @@ class TesteIntegracaoComanda(APITestCase):
             "/api/login/", data=usuario_funcionario_login
         ).json()["token"]
 
-        print(self.token_adm, self.token_comum, self.token_funcionario)
-
         self.produto_1 = Produto.objects.create(
             **produto_mockado, categoria=Categoria.objects.create(**categoria_mockada)
         )
@@ -46,15 +47,53 @@ class TesteIntegracaoComanda(APITestCase):
     def test_tentando_criar_uma_comanda(self):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_comum)
         valores = {
-            "produto_id": self.produto_1,
+            "produto_id": self.produto_1.id,
             "quantidade": 2,
         }
         response = self.client.post("/api/comanda/", data=valores)
         expected_status = status.HTTP_201_CREATED
 
         self.assertEqual(expected_status, response.status_code)
-        self.assertIn(response.data, "id")
-        self.assertIn(response.data, "status")
-        self.assertIn(response.data, "data_criacao")
-        self.assertIn(response.data, "conta")
-        self.assertIn(response.data, "produtos")
+        self.assertEqual(Comanda.objects.count(), 1)
+        self.assertIn("id", response.data)
+        self.assertIn("status", response.data)
+        self.assertIn("data_criacao", response.data)
+        self.assertIn("conta", response.data)
+        self.assertIn("produtos", response.data)
+
+    def test_permite_remocao_de_um_produto_em_uma_comanda(self):
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_comum)
+        valores = {
+            "produto_id": self.produto_1.id,
+            "quantidade": 2,
+        }
+        response_produto = self.client.post("/api/comanda/", data=valores)
+        response_comanda = self.client.delete(
+            f'/api/comanda/{response_produto.data["id"]}/produto/{response_produto.data["produtos"][0]["id"]}/'
+        )
+        expected_status = status.HTTP_204_NO_CONTENT
+
+        self.assertEqual(expected_status, response_comanda.status_code)
+        self.assertEqual(Comanda.objects.count(), 1)
+
+    def test_permite_alterar_quantidade_de_produtos_dentro_da_comanda(self):
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_comum)
+        valores = {
+            "produto_id": self.produto_1.id,
+            "quantidade": 2,
+        }
+        response_produto = self.client.post("/api/comanda/", data=valores)
+        quantidade = {"quantidade": 9}
+        response_comanda = self.client.patch(
+            f'/api/comanda/{response_produto.data["id"]}/produto/{response_produto.data["produtos"][0]["id"]}/',
+            data=quantidade,
+        )
+        expected_status = status.HTTP_200_OK
+
+        self.assertEqual(expected_status, response_comanda.status_code)
+        self.assertEqual(Comanda.objects.count(), 1)
+        self.assertIn("id", response_produto.data)
+        self.assertIn("status", response_produto.data)
+        self.assertIn("data_criacao", response_produto.data)
+        self.assertIn("conta", response_produto.data)
+        self.assertIn("produtos", response_produto.data)
