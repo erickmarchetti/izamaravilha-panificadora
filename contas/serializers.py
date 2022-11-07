@@ -19,6 +19,7 @@ class ContaClienteSerializer(serializers.ModelSerializer):
     id = serializers.UUIDField(read_only=True)
     password = serializers.CharField(max_length=256, write_only=True)
     endereco = EnderecoResumidoSerializer()
+    is_active = serializers.BooleanField(default=False)
 
     class Meta:
         model = Conta
@@ -34,6 +35,7 @@ class ContaClienteSerializer(serializers.ModelSerializer):
             "data_nascimento",
             "is_employee",
             "is_superuser",
+            "is_active",
             "pontos_de_fidelidade",
             "endereco",
         ]
@@ -47,10 +49,12 @@ class ContaClienteSerializer(serializers.ModelSerializer):
 
         usuario = Conta.objects.create_user(**validated_data)
 
+        dado_secret_key = usuario.secret_key
+
         Endereco.objects.create(**dados_endereco, conta=usuario)
 
         send_mail(subject= 'NÃO RESPONDA - Confirmação de Conta Izamaravilha Panificadora',
-            message= f'Olá {dados_primeiro_nome} {dados_ultimo_nome} seja bem-vindo(a) a Izamaravilha Panificadora',
+            message= f'Olá {dados_primeiro_nome} {dados_ultimo_nome} seja bem-vindo(a) a Izamaravilha Panificadora, clique nesse link e valide sua conta http://localhost:8000/api/usuario/validacao/{dado_secret_key}/',
             from_email= settings.EMAIL_HOST_USER,
             recipient_list= [validated_data['email']],
             fail_silently=False,
@@ -174,3 +178,22 @@ class AtualizarPropriaContaSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+class VerificarConta(serializers.ModelSerializer):
+
+    class Meta:
+        model = Conta
+        fields = ["is_active"]
+        read_only_fields = ['id']
+
+    def update(self, instance, validated_data):
+
+        token = validated_data.pop('secret_key')
+
+        usuario = Conta.objects.filter(secret_key=token)[0]
+
+        usuario.is_active = True
+
+        usuario.save()
+        
+        return usuario
