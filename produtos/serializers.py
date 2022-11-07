@@ -6,6 +6,9 @@ from categorias.serializers import SerializerCategoriaProduto
 
 class ProdutoSerializer(serializers.ModelSerializer):
     categoria = SerializerCategoriaProduto()
+    produtosRecentes = serializers.SerializerMethodField(
+        method_name="atualizar_pelo_mais_recente_produto"
+    )
 
     class Meta:
         model = Produto
