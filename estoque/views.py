@@ -1,10 +1,10 @@
 from urllib import request
 from rest_framework import generics
 from .models import Estoque
-from estoque.serializer import EstoqueSerializer
+from estoque.serializers import EstoqueSerializer
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAdminUser
-from .permissoesEstoque import PermissaoAtualizarOuListarEstoqueAdmOuEmpregado
+from .permissions import PermissaoAtualizarOuListarEstoqueAdmOuEmpregado
 
 
 class AtualizaQuantidadeApenasAdmOuFunc(generics.RetrieveAPIView):
