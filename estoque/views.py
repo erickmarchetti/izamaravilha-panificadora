@@ -19,9 +19,14 @@ class AtualizaQuantidadeApenasAdmOuFunc(generics.UpdateAPIView):
 class PegaDoEstoqueQtdPositiva(generics.ListAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAdminUser | PermissaoAtualizarOuListarEstoqueAdmOuEmpregado]
-    serializer_class = EstoqueSerializer
-    queryset = Estoque.objects.all()
+    serializer_class = AtualizarEstoqueSerializer
+    queryset = Produto.objects.all()
 
     def get_queryset(self):
         filtradoQuantidadePositivo = self.request.query_params.get("quantidade", 0)
-        return Estoque.objects.filter(quantidade__lte=filtradoQuantidadePositivo)
+        return [
+            estoque.produto
+            for estoque in Estoque.objects.filter(
+                quantidade__lte=filtradoQuantidadePositivo
+            )
+        ]
