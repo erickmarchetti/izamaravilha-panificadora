@@ -6,6 +6,7 @@ from .serializers import (
     ContaFuncionarioSerializer,
     RecuperarDadosContaCompletaClienteFuncionarioSerializer,
     AtualizarPropriaContaSerializer,
+    VerificarConta,
 )
 from rest_framework.authentication import TokenAuthentication
 from .permissions import (
@@ -47,7 +48,7 @@ class ListarDeletarPropriaContaApenasAdminOuProprioView(
 ):
 
     queryset = Conta.objects.all()
-    serializer_map = {
+    serializers = {
         "GET": ContaClienteSerializer,
         "DELETE": RecuperarDadosContaCompletaClienteFuncionarioSerializer,
     }
@@ -66,3 +67,15 @@ class AtualizarPropriaContaView(generics.UpdateAPIView):
 
     authentication_classes = [TokenAuthentication]
     permission_classes = [ContaPropriaAuthToken]
+
+
+class ValidarEmailView(generics.UpdateAPIView):
+
+    queryset = Conta.objects.all()
+    serializer_class = VerificarConta
+    lookup_field = "secret_key"
+    lookup_url_kwarg = "secret_key"
+
+    def perform_update(self, serializer):
+
+        serializer.save(secret_key=self.kwargs["secret_key"])
