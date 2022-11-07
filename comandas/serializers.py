@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
 
 from django.core.validators import MinValueValidator
 from django.shortcuts import get_object_or_404
@@ -10,9 +9,10 @@ from produtos.models import Produto
 
 from utils.services import (
     pegar_ou_criar_comanda_mais_nova,
-    verificacar_se_produto_tem_estoque,
+    verificar_se_produto_tem_estoque,
     listar_produtos_de_uma_comanda,
     verificar_status_comanda,
+    verificar_produtos_comanda,
 )
 
 
@@ -42,18 +42,16 @@ class AdicionarOuListarProdutoSerializer(serializers.ModelSerializer):
         return listar_produtos_de_uma_comanda(comanda)
 
     def create(self, validated_data):
-        """
-        TODO
-        - verificar se o produto tem estoque sufuciente
-        - verificar se o usuário tem endereço cadastrado
-        - verificar se o produto já foi adicionado
-        """
 
         dono_comanda: Conta = validated_data["conta"]
 
         produto = get_object_or_404(Produto, id=validated_data["produto_id"])
 
+        verificar_se_produto_tem_estoque(produto, validated_data["quantidade"])
+
         comanda_mais_nova = pegar_ou_criar_comanda_mais_nova(dono_comanda)
+
+        verificar_produtos_comanda(comanda_mais_nova, produto)
 
         comanda_mais_nova.comanda_produto.create(
             produto=produto,
@@ -85,6 +83,7 @@ class EditarQuantidadeProdutoSerializer(serializers.ModelSerializer):
         return listar_produtos_de_uma_comanda(comanda)
 
     def update(self, instance: Comanda_Produto, validated_data: dict):
+
         for key, value in validated_data.items():
             setattr(instance, key, value)
 
