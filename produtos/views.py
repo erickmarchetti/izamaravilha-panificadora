@@ -23,11 +23,6 @@ class GetCreateAllProductsView(generics.ListCreateAPIView):
     serializer_class = ProdutoSerializer
 
 
-class GetOnlyProducts(generics.RetrieveAPIView):
-    queryset = Produto.objects.all()
-    serializer_class = ProdutoSerializer
-
-
 class GetOnlyProductsCategory(generics.ListAPIView):
     queryset = Produto.objects.all()
     serializer_class = ProdutoSerializer
