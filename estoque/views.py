@@ -9,7 +9,7 @@ from .permissions import PermissaoAtualizarOuListarEstoqueAdmOuEmpregado
 
 class AtualizaQuantidadeApenasAdmOuFunc(generics.RetrieveAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = []
+    permission_classes = [IsAdminUser | PermissaoAtualizarOuListarEstoqueAdmOuEmpregado]
     serializer_class = EstoqueSerializer
     queryset = Estoque.objects.all()
 
