@@ -14,6 +14,7 @@ class ContaModelTeste(TestCase):
         cls.dados_conta = {
             "username": "bruno COMUM",
             "password": "1234",
+            "email": "emailteste@hotmail.com",
             "first_name": "Bruno",
             "last_name": "Tiberio",
             "telefone": "61992535393",
