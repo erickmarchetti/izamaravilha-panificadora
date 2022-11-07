@@ -14,7 +14,7 @@ class ContaModelTeste(TestCase):
         cls.dados_conta = {
             "username": "bruno COMUM",
             "password": "1234",
-            "email": "emailteste@hotmail.com",
+            "email": "emailteste@email.com",
             "first_name": "Bruno",
             "last_name": "Tiberio",
             "telefone": "61992535393",
@@ -59,6 +59,12 @@ class ContaModelTeste(TestCase):
             Conta._meta.get_field("username").unique,
             f'Verifique se a propriedade `unique` de "username" foi definida como True',
         )
+
+        self.assertEqual(
+            True,
+            Conta._meta.get_field("email").unique,
+            f'Verifique se a propriedade `unique` de "email" foi definida como True',
+        )
         self.assertEqual(
             90,
             Conta._meta.get_field("first_name").max_length,
@@ -101,6 +107,11 @@ class ContaModelTeste(TestCase):
         self.assertEqual(
             self.dados_conta["username"],
             self.usuario.username,
+            f"Verifique se todos os dados estão passando corretamente pela Model",
+        )
+        self.assertEqual(
+            self.dados_conta["email"],
+            self.usuario.email,
             f"Verifique se todos os dados estão passando corretamente pela Model",
         )
         self.assertEqual(

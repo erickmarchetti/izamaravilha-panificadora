@@ -96,5 +96,13 @@ produto_mockado = {
     "imagem": "só testando",
     "descricao": "Um delicioso bolo de chocolate com morangos.",
 }
+coxinha_mockada = {
+    "categoria": {"nome": "fritura"},
+    "preco": 5.00,
+    "nome": "Coxinha de Frango",
+    "imagem": "https://www.fomitasgourmet.com.br/arquivos/LoginID_321/Blog/receita-tradicional-de-coxinha-1729.jpg",
+    "descricao": "Coxinha de frango com catupiry.",
+    "estoque": {"quantidade": 5},
+}
 
 categoria_mockada = {"nome": "categoria mockada"}
