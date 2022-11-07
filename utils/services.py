@@ -4,6 +4,8 @@ from produtos.models import Produto
 from comandas.models import Comanda
 from contas.models import Conta
 
+from comandas.exceptions import ChaveChoiceInvalida
+
 # Comanda
 def verificacar_se_produto_tem_estoque(produto: Produto) -> Produto:
     ...
@@ -37,3 +39,27 @@ def listar_produtos_de_uma_comanda(comanda: Comanda):
     ]
 
     return lista_de_produtos_na_comanda
+
+
+def verificar_status_comanda(
+    instance: Comanda,
+    validated_data: dict,
+    dono_escolhas: list,
+    funcionario_escolhas: list,
+):
+    conta_da_request = validated_data.pop("conta")
+
+    if (
+        conta_da_request == instance.conta
+        and not validated_data["status"] in dono_escolhas
+    ):
+        raise ChaveChoiceInvalida(
+            f"Dono da comanda tem acesso aos status: {dono_escolhas}"
+        )
+    elif (
+        not conta_da_request == instance.conta
+        and not validated_data["status"] in funcionario_escolhas
+    ):
+        raise ChaveChoiceInvalida(
+            f"Funcionários tem acesso aos status: {funcionario_escolhas}"
+        )
