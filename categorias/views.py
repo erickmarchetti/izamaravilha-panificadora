@@ -7,6 +7,7 @@ from .permissions import PermissaoLerOuApenasFuncionario
 
 
 class CategoriasListarOuCriar(generics.ListCreateAPIView):
+
     authentication_classes = [TokenAuthentication]
     permission_classes = [PermissaoLerOuApenasFuncionario]
 
