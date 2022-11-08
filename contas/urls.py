@@ -16,8 +16,13 @@ urlpatterns = [
         name="user-list-clients",
     ),
     path(
+        "usuario/detalhes/",
+        views.ListarContaPropriaView.as_view(),
+        name="user-list-delete-self-client",
+    ),
+    path(
         "usuario/<str:usuario_id>/",
-        views.ListarDeletarPropriaContaApenasAdminOuProprioView.as_view(),
+        views.DeletarContaPropriaOuAdminView.as_view(),
         name="user-list-delete-self-client",
     ),
     path(

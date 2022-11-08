@@ -9,6 +9,7 @@ from .serializers import (
     VerificarConta,
 )
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from .permissions import (
     ContaDeAdministradorAuthToken,
     ContaPropriaAuthToken,
@@ -43,20 +44,26 @@ class ListarTodasContasApenasAdminView(generics.ListAPIView):
     permission_classes = [ContaDeAdministradorAuthToken]
 
 
-class ListarDeletarPropriaContaApenasAdminOuProprioView(
-    SerializerByMethodMixin, generics.RetrieveDestroyAPIView
-):
+class ListarContaPropriaView(generics.RetrieveAPIView):
 
     queryset = Conta.objects.all()
-    serializers = {
-        "GET": ContaClienteSerializer,
-        "DELETE": RecuperarDadosContaCompletaClienteFuncionarioSerializer,
-    }
+    serializer_class = ContaClienteSerializer
 
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+
+        return self.request.user
+
+class DeletarContaPropriaOuAdminView(generics.DestroyAPIView):
+
+    queryset = Conta.objects.all()
+    serializer_class = RecuperarDadosContaCompletaClienteFuncionarioSerializer
     lookup_url_kwarg = "usuario_id"
 
     authentication_classes = [TokenAuthentication]
-    permission_classes = [ContaPropriaOuAdministradorAuthToken]
+    permission_classes = [ContaPropriaAuthToken]
 
 
 class AtualizarPropriaContaView(generics.UpdateAPIView):
