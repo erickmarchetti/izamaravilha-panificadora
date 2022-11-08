@@ -5,6 +5,8 @@ from categorias.serializers import SerializerCategoria
 from rest_framework.authentication import TokenAuthentication
 from .permissions import PermissaoLerOuApenasFuncionario
 
+from drf_spectacular.utils import extend_schema
+
 
 class CategoriasListarOuCriar(generics.ListCreateAPIView):
 
@@ -20,3 +22,7 @@ class CategoriasPegarOuAtualizar(generics.RetrieveUpdateAPIView):
     permission_classes = [PermissaoLerOuApenasFuncionario]
     serializer_class = SerializerCategoria
     queryset = Categoria.objects.all()
+
+    @extend_schema(exclude=True)
+    def put(self, request, *args, **kwargs):
+        return super().put(request, *args, **kwargs)

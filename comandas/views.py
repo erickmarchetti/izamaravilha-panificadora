@@ -3,6 +3,8 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 
+from drf_spectacular.utils import extend_schema
+
 from comandas.models import Comanda, Comanda_Produto, ComandaStatus
 from comandas.serializers import (
     AdicionarOuListarProdutoSerializer,
@@ -47,6 +49,10 @@ class ComandaEditarApagarProdutoView(generics.UpdateAPIView, generics.DestroyAPI
 
         return comanda_produto
 
+    @extend_schema(exclude=True)
+    def put(self, request, *args, **kwargs):
+        return super().put(request, *args, **kwargs)
+
 
 class ComandaEdicaoStatus(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication]
@@ -58,6 +64,10 @@ class ComandaEdicaoStatus(generics.UpdateAPIView):
 
     def perform_update(self, serializer):
         return serializer.save(conta=self.request.user)
+
+    @extend_schema(exclude=True)
+    def put(self, request, *args, **kwargs):
+        return super().put(request, *args, **kwargs)
 
 
 class ComandaListarComandasFinalizadas(generics.ListAPIView):

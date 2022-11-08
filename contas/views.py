@@ -13,11 +13,9 @@ from rest_framework.permissions import IsAuthenticated
 from .permissions import (
     ContaDeAdministradorAuthToken,
     ContaPropriaAuthToken,
-    ContaPropriaOuAdministradorAuthToken,
 )
-from utils.mixins import SerializerByMethodMixin
 
-# Create your views here.
+from drf_spectacular.utils import extend_schema
 
 
 class CriarContasClientView(generics.CreateAPIView):
@@ -75,6 +73,10 @@ class AtualizarPropriaContaView(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [ContaPropriaAuthToken]
 
+    @extend_schema(exclude=True)
+    def put(self, request, *args, **kwargs):
+        return super().put(request, *args, **kwargs)
+
 
 class ValidarEmailView(generics.UpdateAPIView):
 
@@ -86,3 +88,7 @@ class ValidarEmailView(generics.UpdateAPIView):
     def perform_update(self, serializer):
 
         serializer.save(secret_key=self.kwargs["secret_key"])
+
+    @extend_schema(exclude=True)
+    def put(self, request, *args, **kwargs):
+        return super().put(request, *args, **kwargs)
