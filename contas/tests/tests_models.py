@@ -81,7 +81,7 @@ class ContaModelTeste(TestCase):
             f"Verifique se o campo foi definido com o valor default False",
         )
         self.assertEqual(
-            11,
+            14,
             Conta._meta.get_field("cpf").max_length,
             f'Verifique se a propriedade `max_length` de "first_name" foi definida como 11',
         )
