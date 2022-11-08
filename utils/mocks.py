@@ -11,6 +11,8 @@ conta_cliente_mockada = {
     "pontos_de_fidelidade": 0,
 }
 
+usuario_comum_login = {"username": "erick", "password": "1234"}
+
 conta_funcionario_mockada = {
     "username": "erick funcionario",
     "password": "1234",
@@ -23,6 +25,8 @@ conta_funcionario_mockada = {
     "telefone": "994568321",
     "pontos_de_fidelidade": 0,
 }
+
+usuario_funcionario_login = {"username": "erick funcionario", "password": "1234"}
 
 conta_adm_mockada = {
     "username": "adm",
@@ -58,12 +62,10 @@ usuario_funcionario = {
     },
 }
 
-usuario_funcionario_login = {"username": "jorge", "password": "1234"}
-
 usuario_comum = {
     "username": "patrick",
     "password": "1234",
-    "email": "user1@email.com",
+    "email": "user5@email.com",
     "first_name": "patrick",
     "last_name": "junior",
     "telefone": "99999999999",
@@ -78,8 +80,6 @@ usuario_comum = {
         "ponto_de_referencia": "Proximo ao kilão verduras frescas",
     },
 }
-
-usuario_comum_login = {"username": "patrick", "password": "1234"}
 
 endereco_mockado = {
     "rua": "Avenida Brasil",
@@ -96,6 +96,7 @@ produto_mockado = {
     "imagem": "só testando",
     "descricao": "Um delicioso bolo de chocolate com morangos.",
 }
+
 coxinha_mockada = {
     "categoria": {"nome": "fritura"},
     "preco": 5.00,
