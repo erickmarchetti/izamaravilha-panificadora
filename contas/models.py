@@ -15,7 +15,6 @@ class Conta(AbstractUser):
     is_employee = models.BooleanField(default=False)
     data_nascimento = models.DateField()
     cpf = CPFField("cpf", unique=True)
-    cpf = models.CharField(max_length=11, unique=True)
     telefone = models.CharField(max_length=15)
     pontos_de_fidelidade = models.IntegerField(default=0)
     secret_key = models.UUIDField(default=uuid.uuid4, editable=False)

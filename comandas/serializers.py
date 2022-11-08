@@ -16,6 +16,20 @@ from utils.services import (
 )
 
 
+class ContaDaComandaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Conta
+        fields = [
+            "id",
+            "username",
+            "pontos_de_fidelidade",
+        ]
+        read_only_fields = [
+            "username",
+            "pontos_de_fidelidade",
+        ]
+
+
 class AdicionarOuListarProdutoSerializer(serializers.ModelSerializer):
     produto_id = serializers.UUIDField(
         write_only=True,
@@ -24,6 +38,8 @@ class AdicionarOuListarProdutoSerializer(serializers.ModelSerializer):
         write_only=True, validators=[MinValueValidator(1)]
     )
     produtos = serializers.SerializerMethodField(method_name="listar_produtos")
+
+    conta = ContaDaComandaSerializer(read_only=True)
 
     class Meta:
         model = Comanda
@@ -67,6 +83,8 @@ class EditarQuantidadeProdutoSerializer(serializers.ModelSerializer):
     )
     produtos = serializers.SerializerMethodField(method_name="listar_produtos")
 
+    conta = ContaDaComandaSerializer(read_only=True)
+
     class Meta:
         model = Comanda
         fields = [
@@ -95,6 +113,8 @@ class EditarQuantidadeProdutoSerializer(serializers.ModelSerializer):
 
 
 class EditarStatusComandaSerializer(serializers.ModelSerializer):
+    conta = ContaDaComandaSerializer(read_only=True)
+
     class Meta:
         model = Comanda
         fields = [
