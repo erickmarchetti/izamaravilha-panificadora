@@ -36,8 +36,8 @@ class ProdutoSerializer(serializers.ModelSerializer):
         return resultado_produto
 
     def update(self, instance, validated_data: dict):
-        cortando_categoria = validated_data.pop("categoria")
-        cortando_estoque = validated_data.pop("estoque")
+        cortando_categoria = validated_data.pop("categoria", None)
+        cortando_estoque = validated_data.pop("estoque", None)
         if cortando_categoria:
             pegando_ou_criando = Categoria.objects.get_or_create(**cortando_categoria)[
                 0
