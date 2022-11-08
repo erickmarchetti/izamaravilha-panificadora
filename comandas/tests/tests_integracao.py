@@ -1,23 +1,26 @@
-import ipdb
-
 from rest_framework.test import APITestCase
-from rest_framework.authtoken.models import Token
+from rest_framework import status
+
 from comandas.models import Comanda
+
 from utils.mocks import (
-    usuario_comum,
-    usuario_funcionario,
+    conta_cliente_mockada,
+    conta_funcionario_mockada,
     conta_adm_mockada,
     usuario_adm_login,
     usuario_comum_login,
     usuario_funcionario_login,
-    produto_mockado,
     categoria_mockada,
+    endereco_mockado,
+    produto_mockado,
 )
-from rest_framework import status
+
 
 from categorias.models import Categoria
 from contas.models import Conta
 from produtos.models import Produto
+from enderecos.models import Endereco
+from estoque.models import Estoque
 
 
 class TesteIntegracaoComanda(APITestCase):
@@ -28,21 +31,21 @@ class TesteIntegracaoComanda(APITestCase):
             "token"
         ]
 
-        self.client.post("/api/usuario/", data=usuario_comum, format="json")
+        cliente = Conta.objects.create_user(**conta_cliente_mockada)
+        Endereco.objects.create(**endereco_mockado, conta=cliente)
         self.token_comum = self.client.post(
             "/api/login/", data=usuario_comum_login
         ).json()["token"]
 
-        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_adm)
-
-        self.client.post("/api/funcionario/", data=usuario_funcionario, format="json")
+        funcionario = Conta.objects.create_user(**conta_funcionario_mockada)
+        Endereco.objects.create(**endereco_mockado, conta=funcionario)
         self.token_funcionario = self.client.post(
             "/api/login/", data=usuario_funcionario_login
         ).json()["token"]
 
-        self.produto_1 = Produto.objects.create(
-            **produto_mockado, categoria=Categoria.objects.create(**categoria_mockada)
-        )
+        categoria = Categoria.objects.create(**categoria_mockada)
+        self.produto_1 = Produto.objects.create(**produto_mockado, categoria=categoria)
+        Estoque.objects.create(quantidade=300, produto=self.produto_1)
 
     def test_tentando_criar_uma_comanda(self):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_comum)
@@ -145,17 +148,13 @@ class TesteIntegracaoComanda(APITestCase):
             "produto_id": self.produto_1.id,
             "quantidade": 2,
         }
-        valores2 = {
-            "produto_id": self.produto_1.id,
-            "quantidade": 2,
-        }
+
         self.client.post("/api/comanda/", data=valores1)
-        self.client.post("/api/comanda/", data=valores2)
         response_comanda = self.client.get("/api/comanda/abertas/")
         expected_status = status.HTTP_200_OK
 
         self.assertEqual(expected_status, response_comanda.status_code)
-        self.assertEqual(Comanda.objects.count(), 2)
+        self.assertEqual(Comanda.objects.count(), 1)
 
     def test_permite_listagem_de_uma_comanda_específica(self):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_funcionario)
@@ -163,13 +162,8 @@ class TesteIntegracaoComanda(APITestCase):
             "produto_id": self.produto_1.id,
             "quantidade": 2,
         }
-        valores2 = {
-            "produto_id": self.produto_1.id,
-            "quantidade": 2,
-        }
         produto = self.client.post("/api/comanda/", data=valores1)
-        self.client.post("/api/comanda/", data=valores2)
-        response_comanda = self.client.get(f'/api/comanda/{produto["id"]}/')
+        response_comanda = self.client.get(f'/api/comanda/{produto.json()["id"]}/')
         expected_status = status.HTTP_200_OK
 
         self.assertEqual(expected_status, response_comanda.status_code)

@@ -7,7 +7,6 @@ from enderecos.models import Endereco
 
 from comandas.exceptions import RequestInvalida
 
-import ipdb
 import math
 
 # Comanda
