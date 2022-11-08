@@ -18,7 +18,12 @@ class ComandaRelacionamentosTest(TestCase):
         self.assertEqual(self.comanda.conta, self.cliente)
 
         novo_cliente = Conta.objects.create_user(
-            **{**conta_cliente_mockada, "cpf": "36593511007", "username": "erick 2"}
+            **{
+                **conta_cliente_mockada,
+                "cpf": "36593511007",
+                "username": "erick 2",
+                "email": "user427@gmail.com",
+            }
         )
 
         self.comanda.conta = novo_cliente
