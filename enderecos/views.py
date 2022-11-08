@@ -1,26 +1,17 @@
 from rest_framework import generics
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Endereco
-from .serializers import EnderecoDetalhadoSerializer, EnderecoResumidoSerializer
-from utils.mixins import SerializerByMethodMixin
-from .permissions import VerificarAutenticacao
+from .serializers import EnderecoDetalhadoSerializer
 
 
-class EnderecoView(SerializerByMethodMixin, generics.ListCreateAPIView):
+class EnderecoPorIDView(generics.UpdateAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [VerificarAutenticacao]
+    permission_classes = [IsAuthenticated]
 
-    queryset = Endereco.objects.all()
-    serializers = {
-        "GET": EnderecoDetalhadoSerializer,
-        "POST": EnderecoResumidoSerializer,
-    }
-
-    def perform_create(self, serializer):
-        serializer.save(conta=self.request.user)
-
-
-class EnderecoPorIDView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Endereco.objects.all()
     serializer_class = EnderecoDetalhadoSerializer
+
+    def get_object(self):
+        return self.request.user.endereco
