@@ -84,6 +84,8 @@ class EditarQuantidadeProdutoSerializer(serializers.ModelSerializer):
 
     def update(self, instance: Comanda_Produto, validated_data: dict):
 
+        verificar_se_produto_tem_estoque(instance.produto, validated_data["quantidade"])
+
         for key, value in validated_data.items():
             setattr(instance, key, value)
 

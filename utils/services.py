@@ -8,6 +8,7 @@ from enderecos.models import Endereco
 from comandas.exceptions import RequestInvalida
 
 import ipdb
+import math
 
 # Comanda
 def verificar_se_produto_tem_estoque(
@@ -60,6 +61,33 @@ def listar_produtos_de_uma_comanda(comanda: Comanda):
     return lista_de_produtos_na_comanda
 
 
+def descontar_pedidos_do_estoque(comanda: Comanda) -> None | int:
+    erros = []
+    soma_total = 0
+
+    for comanda_produto in comanda.comanda_produto.all():
+        if comanda_produto.produto.estoque.quantidade < comanda_produto.quantidade:
+            erros.append(
+                {comanda_produto.produto.nome: "Produto não disponivel no estoque"}
+            )
+
+    if erros:
+        raise RequestInvalida(erros)
+    else:
+        for comanda_produto in comanda.comanda_produto.all():
+            estoque_atual = comanda_produto.produto.estoque
+
+            estoque_atual.quantidade -= comanda_produto.quantidade
+            estoque_atual.save()
+
+            soma_total += comanda_produto.quantidade * comanda_produto.produto.preco
+
+        comanda_produto.comanda.conta.pontos_de_fidelidade += math.floor(
+            soma_total / 10
+        )
+        comanda_produto.comanda.conta.save()
+
+
 def verificar_status_comanda(
     instance: Comanda,
     validated_data: dict,
@@ -73,12 +101,23 @@ def verificar_status_comanda(
         and not validated_data["status"] in dono_escolhas
     ):
         raise RequestInvalida(
-            {"erro": f"Dono da comanda tem acesso aos status: {dono_escolhas}"}
+            {
+                "erro": f"Dono da comanda tem acesso aos status: {', '.join(dono_escolhas)}"
+            }
         )
+    elif conta_da_request == instance.conta and instance.status == "fechada":
+        raise RequestInvalida({"erro": "Não é possivel alterar comandas já fechadas"})
     elif (
         not conta_da_request == instance.conta
         and not validated_data["status"] in funcionario_escolhas
     ):
         raise RequestInvalida(
-            {"erro": f"Funcionários tem acesso aos status: {funcionario_escolhas}"}
+            {
+                "erro": f"Funcionários tem acesso aos status: {', '.join(funcionario_escolhas)}"
+            }
         )
+    elif not conta_da_request == instance.conta and instance.status == "aberta":
+        raise RequestInvalida({"erro": "Usuario ainda não fechou a comanda"})
+
+    if conta_da_request == instance.conta and validated_data["status"] == "fechada":
+        descontar_pedidos_do_estoque(instance)
