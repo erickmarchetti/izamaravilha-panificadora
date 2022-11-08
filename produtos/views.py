@@ -6,7 +6,6 @@ from produtos.models import Produto
 from produtos.permissions import VendedorOuAdminPermissions
 from rest_framework.authentication import TokenAuthentication
 from produtos.serializers import ProdutoSerializer
-import ipdb
 from django.shortcuts import get_object_or_404
 
 

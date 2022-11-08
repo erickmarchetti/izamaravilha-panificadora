@@ -1,5 +1,3 @@
-import ipdb
-
 from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
 from utils.mocks import (
@@ -28,7 +26,6 @@ class TesteIntegracaoComanda(APITestCase):
         ]
 
         res = self.client.post("/api/usuario/", data=usuario_comum, format="json")
-        ipdb.set_trace()
         self.token_comum = self.client.post(
             "/api/login/", data=usuario_comum_login
         ).json()["token"]
