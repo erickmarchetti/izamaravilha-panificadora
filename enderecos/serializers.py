@@ -1,8 +1,4 @@
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
-
-from contas.models import Conta
-# from contas.serializers import ContaClienteSerializer
 
 from .models import Endereco
 from .exceptions import ContaJaPossuiEnderecoCadastrado
@@ -10,9 +6,6 @@ from .exceptions import ContaJaPossuiEnderecoCadastrado
 
 class EnderecoDetalhadoSerializer(serializers.ModelSerializer):
     id = serializers.UUIDField(read_only=True)
-    # conta = ContaClienteSerializer(
-        # read_only=True, validators=[UniqueValidator(Conta.objects.all())]
-    # )
 
     class Meta:
         model = Endereco
