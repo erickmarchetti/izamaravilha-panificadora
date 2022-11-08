@@ -8,7 +8,7 @@ from .permissions import PermissaoAtualizarOuListarEstoqueAdmOuEmpregado
 
 from produtos.models import Produto
 
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 
 
 class AtualizaQuantidadeApenasAdmOuFunc(generics.UpdateAPIView):
@@ -37,3 +37,16 @@ class PegaDoEstoqueQtdPositiva(generics.ListAPIView):
                 quantidade__lte=filtradoQuantidadePositivo
             )
         ]
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                "quantidade",
+                int,
+                required=False,
+                description="Um query param pode ser passado, url: /api/estoque/?quantidade=num_quantidade_estoque",
+            )
+        ]
+    )
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
