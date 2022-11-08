@@ -1,12 +1,14 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import generics
-from categorias.models import Categoria
-from categorias.serializers import SerializerCategoria
-from estoque.models import Estoque
+from rest_framework.authentication import TokenAuthentication
+
 from produtos.models import Produto
 from produtos.permissions import VendedorOuAdminPermissions
-from rest_framework.authentication import TokenAuthentication
 from produtos.serializers import ProdutoSerializer
-from django.shortcuts import get_object_or_404
+
+from estoque.models import Estoque
+
+from drf_spectacular.utils import extend_schema
 
 
 class PatchDeleteProductView(generics.RetrieveUpdateDestroyAPIView):
@@ -14,6 +16,10 @@ class PatchDeleteProductView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [VendedorOuAdminPermissions]
     queryset = Produto.objects.all()
     serializer_class = ProdutoSerializer
+
+    @extend_schema(exclude=True)
+    def put(self, request, *args, **kwargs):
+        return super().put(request, *args, **kwargs)
 
 
 class GetCreateAllProductsView(generics.ListCreateAPIView):
