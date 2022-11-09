@@ -14,6 +14,8 @@
     - [3.4. Instale as dependências](#34-instale-as-dependências)
     - [3.4. Execute as migrações para realizar a persistência de dados](#34-execute-as-migrações-para-realizar-a-persistência-de-dados)
   - [4. Autenticação](#4-autenticação)
+  - [5. Rotas](#5-rotas)
+    - [Documentação da API](#documentação-da-api)
 
 ---
 
@@ -42,7 +44,7 @@ Tecnologias usadas nesse projeto:
 - [IPython](https://pypi.org/project/ipython/)
 - [IPDB](https://pypi.org/project/ipdb/)
 
-**Base URL: https://izamaravilha-project.herokuapp.com/api/swagger/**
+**Base URL: https://izamaravilha-project.herokuapp.com/api/**
 
 ### 1.1. Time
 
@@ -92,13 +94,13 @@ Entre no ambiente virtual com o comando:
 **Windows**
 
 ```shell
-source venv/Scripts/activate                    # terminal BASH
+source venv/Scripts/activate # terminal BASH
 ```
 
 ou
 
 ```shell
-.\venv\Scripts\activate                         # terminal powershell
+.\venv\Scripts\activate # terminal powershell
 ```
 
 **Linux**
@@ -120,13 +122,13 @@ pip install -r requirements.txt
 **Windows**
 
 ```shell
-.\manage.py migrate                 # terminal BASH
+.\manage.py migrate # terminal BASH
 ```
 
 ou
 
 ```shell
-python manage.py migrate            # terminal powershell
+python manage.py migrate # terminal powershell
 ```
 
 **Linux**
@@ -142,3 +144,29 @@ python manage.py migrate            # terminal powershell
 [ Voltar ao topo ](#sumário)
 
 Algumas rotas necessitam de autenticação, utilizando o tipo **Token**.
+O token sempre será gerado automaticamente através do **login de usuário**, ressaltando que há níveis de
+autorizações diferentes.
+
+---
+
+## 5. Rotas
+
+[ Voltar ao topo ](#sumário)
+
+### Documentação da API
+
+É possível acessar à documentação completa para poder utilizar a API.
+
+Nessa mesma documentação é possível adquirir informações sobre os requests, chaves necessárias do request e
+informações sobre **autorização necessárias** para algumas rotas.
+
+Apps desenvolvidos e aplicados:
+
+- Contas
+- Login
+- Endereços
+- Estoque
+- Produtos
+- Comandas
+
+---
