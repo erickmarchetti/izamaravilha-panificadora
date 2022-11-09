@@ -7,6 +7,7 @@ from django.contrib.auth.hashers import make_password
 
 from django.core.mail import send_mail
 from django.conf import settings
+from django.utils.crypto import get_random_string
 
 
 class LoginSerializer(serializers.ModelSerializer):
@@ -52,9 +53,11 @@ class ContaClienteSerializer(serializers.ModelSerializer):
         dados_primeiro_nome = validated_data["first_name"]
         dados_ultimo_nome = validated_data["last_name"]
 
-        usuario = Conta.objects.create_user(**validated_data)
+        dado_secret_key = get_random_string(6, "0123456789")
 
-        dado_secret_key = usuario.secret_key
+        usuario = Conta.objects.create_user(
+            **validated_data, secret_key=dado_secret_key
+        )
 
         Endereco.objects.create(**dados_endereco, conta=usuario)
 
