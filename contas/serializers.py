@@ -8,6 +8,7 @@ from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
 from django.conf import settings
 
+
 class LoginSerializer(serializers.ModelSerializer):
 
     username = serializers.CharField()
@@ -39,13 +40,17 @@ class ContaClienteSerializer(serializers.ModelSerializer):
             "pontos_de_fidelidade",
             "endereco",
         ]
-        read_only_fields = ["id", "is_employee", "pontos_de_fidelidade",]
+        read_only_fields = [
+            "id",
+            "is_employee",
+            "pontos_de_fidelidade",
+        ]
 
     def create(self, validated_data):
 
-        dados_endereco = validated_data.pop('endereco')
-        dados_primeiro_nome = validated_data['first_name']
-        dados_ultimo_nome = validated_data['last_name']
+        dados_endereco = validated_data.pop("endereco")
+        dados_primeiro_nome = validated_data["first_name"]
+        dados_ultimo_nome = validated_data["last_name"]
 
         usuario = Conta.objects.create_user(**validated_data)
 
@@ -53,13 +58,13 @@ class ContaClienteSerializer(serializers.ModelSerializer):
 
         Endereco.objects.create(**dados_endereco, conta=usuario)
 
-        send_mail(subject= 'NÃO RESPONDA - Confirmação de Conta Izamaravilha Panificadora',
-            message= f'Olá {dados_primeiro_nome} {dados_ultimo_nome} seja bem-vindo(a) a Izamaravilha Panificadora, clique nesse link e valide sua conta http://localhost:8000/api/usuario/validacao/{dado_secret_key}/',
-            from_email= settings.EMAIL_HOST_USER,
-            recipient_list= [validated_data['email']],
+        send_mail(
+            subject="NÃO RESPONDA - Confirmação de Conta Izamaravilha Panificadora",
+            message=f"Olá {dados_primeiro_nome} {dados_ultimo_nome} seja bem-vindo(a) a Izamaravilha Panificadora, insira o código {dado_secret_key} e valide sua conta",
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[validated_data["email"]],
             fail_silently=False,
         )
-
 
         return usuario
 
@@ -85,13 +90,13 @@ class ContaFuncionarioSerializer(serializers.ModelSerializer):
             "is_employee",
             "is_superuser",
             "pontos_de_fidelidade",
-            "endereco"
+            "endereco",
         ]
         read_only_fields = ["id", "is_employee", "pontos_de_fidelidade"]
 
     def create(self, validated_data):
 
-        dados_endereco = validated_data.pop('endereco')        
+        dados_endereco = validated_data.pop("endereco")
 
         usuario = Conta.objects.create_user(**validated_data, is_employee=True)
 
@@ -179,21 +184,21 @@ class AtualizarPropriaContaSerializer(serializers.ModelSerializer):
 
         return instance
 
-class VerificarConta(serializers.ModelSerializer):
 
+class VerificarConta(serializers.ModelSerializer):
     class Meta:
         model = Conta
         fields = ["is_active"]
-        read_only_fields = ['id']
+        read_only_fields = ["id"]
 
     def update(self, instance, validated_data):
 
-        token = validated_data.pop('secret_key')
+        token = validated_data.pop("secret_key")
 
         usuario = Conta.objects.filter(secret_key=token)[0]
 
         usuario.is_active = True
 
         usuario.save()
-        
+
         return usuario
