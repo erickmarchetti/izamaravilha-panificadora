@@ -60,7 +60,7 @@ def listar_produtos_de_uma_comanda(comanda: Comanda):
     return lista_de_produtos_na_comanda
 
 
-def descontar_pedidos_do_estoque(comanda: Comanda) -> None | int:
+def descontar_pedidos_do_estoque(comanda):
     erros = []
     soma_total = 0
 
