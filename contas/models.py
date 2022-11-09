@@ -4,6 +4,8 @@ from django.db import models
 
 from cpf_field.models import CPFField
 
+from django.utils.crypto import get_random_string
+
 
 class Conta(AbstractUser):
 
@@ -17,7 +19,9 @@ class Conta(AbstractUser):
     cpf = CPFField("cpf", unique=True)
     telefone = models.CharField(max_length=15)
     pontos_de_fidelidade = models.IntegerField(default=0)
-    secret_key = models.UUIDField(default=uuid.uuid4, editable=False)
+    secret_key = models.CharField(
+        max_length=6, default=get_random_string(6, "0123456789"), editable=False
+    )
 
     REQUIRED_FIELDS = [
         "email",
