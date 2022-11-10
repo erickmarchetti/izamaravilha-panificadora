@@ -1,0 +1,1762 @@
+openapi: 3.0.3
+info:
+  title: Izamaravilha Panificadora
+  version: 1.0.0
+  description: API da Panificadora Izamaravilha
+paths:
+  /api/categorias/:
+    get:
+      operationId: categorias_list
+      tags:
+      - Categoria
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SerializerCategoria'
+          description: ''
+    post:
+      operationId: categorias_create
+      tags:
+      - Categoria
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SerializerCategoria'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SerializerCategoria'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SerializerCategoria'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerializerCategoria'
+          description: ''
+  /api/categorias/{id}/:
+    get:
+      operationId: categorias_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this categoria.
+        required: true
+      tags:
+      - Categoria
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerializerCategoria'
+          description: ''
+    put:
+      operationId: categorias_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this categoria.
+        required: true
+      tags:
+      - Categoria
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SerializerCategoria'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SerializerCategoria'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SerializerCategoria'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerializerCategoria'
+          description: ''
+    patch:
+      operationId: categorias_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this categoria.
+        required: true
+      tags:
+      - Categoria
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSerializerCategoria'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSerializerCategoria'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSerializerCategoria'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerializerCategoria'
+          description: ''
+  /api/comanda/:
+    post:
+      operationId: comanda_create
+      tags:
+      - Comanda
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdicionarOuListarProduto'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdicionarOuListarProduto'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdicionarOuListarProduto'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdicionarOuListarProduto'
+          description: ''
+  /api/comanda/{comanda_id}/:
+    get:
+      operationId: comanda_retrieve
+      parameters:
+      - in: path
+        name: comanda_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this comanda.
+        required: true
+      tags:
+      - Comanda
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListarProduto'
+          description: ''
+  /api/comanda/{comanda_id}/produto/{produto_id}/:
+    put:
+      operationId: comanda_produto_update
+      parameters:
+      - in: path
+        name: comanda_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: produto_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Comanda
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditarQuantidadeProduto'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EditarQuantidadeProduto'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EditarQuantidadeProduto'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EditarQuantidadeProduto'
+          description: ''
+    patch:
+      operationId: comanda_produto_partial_update
+      parameters:
+      - in: path
+        name: comanda_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: produto_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Comanda
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEditarQuantidadeProduto'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEditarQuantidadeProduto'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEditarQuantidadeProduto'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EditarQuantidadeProduto'
+          description: ''
+    delete:
+      operationId: comanda_produto_destroy
+      parameters:
+      - in: path
+        name: comanda_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: produto_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Comanda
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/comanda/{comanda_id}/status/:
+    put:
+      operationId: comanda_status_update
+      parameters:
+      - in: path
+        name: comanda_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this comanda.
+        required: true
+      tags:
+      - Comanda
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditarProduto'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EditarProduto'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EditarProduto'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EditarProduto'
+          description: ''
+    patch:
+      operationId: comanda_status_partial_update
+      parameters:
+      - in: path
+        name: comanda_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this comanda.
+        required: true
+      tags:
+      - Comanda
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEditarProduto'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEditarProduto'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEditarProduto'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EditarProduto'
+          description: ''
+  /api/comanda/abertas/:
+    get:
+      operationId: comanda_abertas_list
+      tags:
+      - Comanda
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ListarProduto'
+          description: ''
+  /api/comanda/finalizadas/:
+    get:
+      operationId: comanda_finalizadas_list
+      tags:
+      - Comanda
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ListarProduto'
+          description: ''
+  /api/comanda/user/:
+    get:
+      operationId: comanda_user_list
+      tags:
+      - Comanda
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdicionarOuListarProduto'
+          description: ''
+  /api/endereco/:
+    get:
+      operationId: endereco_list
+      tags:
+      - Endereço
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EnderecoDetalhado'
+          description: ''
+    post:
+      operationId: endereco_create
+      tags:
+      - Endereço
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnderecoResumido'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnderecoResumido'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnderecoResumido'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnderecoResumido'
+          description: ''
+  /api/endereco/{id}/:
+    get:
+      operationId: endereco_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this endereco.
+        required: true
+      tags:
+      - Endereço
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnderecoDetalhado'
+          description: ''
+    put:
+      operationId: endereco_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this endereco.
+        required: true
+      tags:
+      - Endereço
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnderecoDetalhado'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnderecoDetalhado'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnderecoDetalhado'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnderecoDetalhado'
+          description: ''
+    patch:
+      operationId: endereco_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this endereco.
+        required: true
+      tags:
+      - Endereço
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEnderecoDetalhado'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEnderecoDetalhado'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEnderecoDetalhado'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnderecoDetalhado'
+          description: ''
+    delete:
+      operationId: endereco_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this endereco.
+        required: true
+      tags:
+      - Endereço
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/estoque/:
+    get:
+      operationId: estoque_list
+      tags:
+      - Estoque
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AtualizarEstoque'
+          description: ''
+  /api/estoque/{produto_id}/:
+    put:
+      operationId: estoque_update
+      parameters:
+      - in: path
+        name: produto_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this produto.
+        required: true
+      tags:
+      - Estoque
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AtualizarEstoque'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AtualizarEstoque'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AtualizarEstoque'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AtualizarEstoque'
+          description: ''
+    patch:
+      operationId: estoque_partial_update
+      parameters:
+      - in: path
+        name: produto_id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this produto.
+        required: true
+      tags:
+      - Estoque
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAtualizarEstoque'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAtualizarEstoque'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAtualizarEstoque'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AtualizarEstoque'
+          description: ''
+  /api/funcionario/:
+    post:
+      operationId: funcionario_create
+      tags:
+      - Conta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContaFuncionario'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ContaFuncionario'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ContaFuncionario'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContaFuncionario'
+          description: ''
+  /api/login/:
+    post:
+      operationId: login_create
+      tags:
+      - login
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+          description: ''
+  /api/produtos/:
+    get:
+      operationId: produtos_list
+      tags:
+      - Produtos
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Produto'
+          description: ''
+    post:
+      operationId: produtos_create
+      tags:
+      - Produtos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Produto'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Produto'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Produto'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Produto'
+          description: ''
+  /api/produtos/{id}/:
+    get:
+      operationId: produtos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this produto.
+        required: true
+      tags:
+      - Produtos
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Produto'
+          description: ''
+    put:
+      operationId: produtos_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this produto.
+        required: true
+      tags:
+      - Produtos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Produto'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Produto'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Produto'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Produto'
+          description: ''
+    patch:
+      operationId: produtos_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this produto.
+        required: true
+      tags:
+      - Produtos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProduto'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProduto'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProduto'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Produto'
+          description: ''
+    delete:
+      operationId: produtos_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this produto.
+        required: true
+      tags:
+      - Produtos
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/produtos/categoria/{id}/:
+    get:
+      operationId: produtos_categoria_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this produto.
+        required: true
+      tags:
+      - Produtos
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Produto'
+          description: ''
+  /api/produtos/recentes/:
+    get:
+      operationId: produtos_recentes_list
+      tags:
+      - Produtos
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Produto'
+          description: ''
+  /api/usuario/:
+    post:
+      operationId: usuario_create
+      tags:
+      - Conta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContaCliente'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ContaCliente'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ContaCliente'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContaCliente'
+          description: ''
+  /api/usuario/{usuario_id}/:
+    get:
+      operationId: usuario_retrieve
+      parameters:
+      - in: path
+        name: usuario_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Conta
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContaCliente'
+          description: ''
+    delete:
+      operationId: usuario_destroy
+      parameters:
+      - in: path
+        name: usuario_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Conta
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/usuario/{usuario_id}/atualizar/:
+    put:
+      operationId: usuario_atualizar_update
+      parameters:
+      - in: path
+        name: usuario_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Conta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AtualizarPropriaConta'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AtualizarPropriaConta'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AtualizarPropriaConta'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AtualizarPropriaConta'
+          description: ''
+    patch:
+      operationId: usuario_atualizar_partial_update
+      parameters:
+      - in: path
+        name: usuario_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - Conta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAtualizarPropriaConta'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAtualizarPropriaConta'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAtualizarPropriaConta'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AtualizarPropriaConta'
+          description: ''
+  /api/usuario/contas/:
+    get:
+      operationId: usuario_contas_list
+      tags:
+      - Conta
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContaCliente'
+          description: ''
+  /api/usuario/validacao/{secret_key}/:
+    put:
+      operationId: usuario_validacao_update
+      parameters:
+      - in: path
+        name: secret_key
+        schema:
+          type: string
+        required: true
+      tags:
+      - Conta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerificarConta'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerificarConta'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerificarConta'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificarConta'
+          description: ''
+    patch:
+      operationId: usuario_validacao_partial_update
+      parameters:
+      - in: path
+        name: secret_key
+        schema:
+          type: string
+        required: true
+      tags:
+      - Conta
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedVerificarConta'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedVerificarConta'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedVerificarConta'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificarConta'
+          description: ''
+components:
+  schemas:
+    AdicionarOuListarProduto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          readOnly: true
+        data_criacao:
+          type: string
+          format: date-time
+          readOnly: true
+        conta:
+          type: string
+          format: uuid
+          readOnly: true
+        produto_id:
+          type: string
+          format: uuid
+          writeOnly: true
+        quantidade:
+          type: integer
+          writeOnly: true
+          minimum: 1
+        produtos:
+          type: string
+          readOnly: true
+      required:
+      - conta
+      - data_criacao
+      - id
+      - produto_id
+      - produtos
+      - quantidade
+      - status
+    AtualizarEstoque:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        categoria:
+          allOf:
+          - $ref: '#/components/schemas/SerializerCategoriaProduto'
+          readOnly: true
+        preco:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+          readOnly: true
+        nome:
+          type: string
+          readOnly: true
+        imagem:
+          type: string
+          readOnly: true
+        descricao:
+          type: string
+          readOnly: true
+          nullable: true
+        estoque:
+          allOf:
+          - $ref: '#/components/schemas/Estoque'
+          readOnly: true
+        quantidade:
+          type: integer
+          writeOnly: true
+      required:
+      - categoria
+      - descricao
+      - estoque
+      - id
+      - imagem
+      - nome
+      - preco
+      - quantidade
+    AtualizarPropriaConta:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          maxLength: 30
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 256
+        first_name:
+          type: string
+          maxLength: 90
+        last_name:
+          type: string
+          maxLength: 120
+        telefone:
+          type: string
+          maxLength: 15
+        cpf:
+          type: string
+          readOnly: true
+        data_nascimento:
+          type: string
+          format: date
+        is_employee:
+          type: boolean
+          readOnly: true
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly
+            assigning them.
+        pontos_de_fidelidade:
+          type: integer
+          readOnly: true
+      required:
+      - cpf
+      - data_nascimento
+      - first_name
+      - id
+      - is_employee
+      - is_superuser
+      - last_name
+      - password
+      - pontos_de_fidelidade
+      - telefone
+      - username
+    AuthToken:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          readOnly: true
+      required:
+      - password
+      - token
+      - username
+    ContaCliente:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          maxLength: 30
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 256
+        first_name:
+          type: string
+          maxLength: 90
+        last_name:
+          type: string
+          maxLength: 120
+        telefone:
+          type: string
+          maxLength: 15
+        cpf:
+          type: string
+          maxLength: 11
+        data_nascimento:
+          type: string
+          format: date
+        is_employee:
+          type: boolean
+          readOnly: true
+        is_superuser:
+          type: boolean
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly
+            assigning them.
+        is_active:
+          type: boolean
+          default: false
+        pontos_de_fidelidade:
+          type: integer
+          readOnly: true
+        endereco:
+          $ref: '#/components/schemas/EnderecoResumido'
+      required:
+      - cpf
+      - data_nascimento
+      - email
+      - endereco
+      - first_name
+      - id
+      - is_employee
+      - last_name
+      - password
+      - pontos_de_fidelidade
+      - telefone
+      - username
+    ContaFuncionario:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          maxLength: 30
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 256
+        first_name:
+          type: string
+          maxLength: 90
+        last_name:
+          type: string
+          maxLength: 120
+        telefone:
+          type: string
+          maxLength: 15
+        cpf:
+          type: string
+          maxLength: 11
+        data_nascimento:
+          type: string
+          format: date
+        is_employee:
+          type: boolean
+          readOnly: true
+        is_superuser:
+          type: boolean
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly
+            assigning them.
+        pontos_de_fidelidade:
+          type: integer
+          readOnly: true
+        endereco:
+          $ref: '#/components/schemas/EnderecoResumido'
+      required:
+      - cpf
+      - data_nascimento
+      - email
+      - endereco
+      - first_name
+      - id
+      - is_employee
+      - last_name
+      - password
+      - pontos_de_fidelidade
+      - telefone
+      - username
+    EditarProduto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        data_criacao:
+          type: string
+          format: date-time
+          readOnly: true
+        conta:
+          type: string
+          format: uuid
+          readOnly: true
+      required:
+      - conta
+      - data_criacao
+      - id
+    EditarQuantidadeProduto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          readOnly: true
+        data_criacao:
+          type: string
+          format: date-time
+          readOnly: true
+        conta:
+          type: string
+          format: uuid
+          readOnly: true
+        quantidade:
+          type: integer
+          writeOnly: true
+          minimum: 1
+        produtos:
+          type: string
+          readOnly: true
+      required:
+      - conta
+      - data_criacao
+      - id
+      - produtos
+      - quantidade
+      - status
+    EnderecoDetalhado:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        conta:
+          type: string
+          format: uuid
+        rua:
+          type: string
+        numero:
+          type: string
+        complemento:
+          type: string
+        cidade:
+          type: string
+        estado:
+          type: string
+        ponto_de_referencia:
+          type: string
+      required:
+      - cidade
+      - complemento
+      - conta
+      - estado
+      - id
+      - numero
+      - ponto_de_referencia
+      - rua
+    EnderecoResumido:
+      type: object
+      properties:
+        rua:
+          type: string
+        numero:
+          type: string
+        complemento:
+          type: string
+        cidade:
+          type: string
+        estado:
+          type: string
+        ponto_de_referencia:
+          type: string
+      required:
+      - cidade
+      - complemento
+      - estado
+      - numero
+      - ponto_de_referencia
+      - rua
+    Estoque:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        quantidade:
+          type: integer
+        atualizado_em:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - atualizado_em
+      - id
+      - quantidade
+    ListarProduto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          readOnly: true
+        data_criacao:
+          type: string
+          format: date-time
+          readOnly: true
+        conta:
+          type: string
+          format: uuid
+          readOnly: true
+        produto_id:
+          type: string
+          format: uuid
+          writeOnly: true
+        quantidade:
+          type: integer
+          writeOnly: true
+          minimum: 1
+        produtos:
+          type: string
+          readOnly: true
+      required:
+      - conta
+      - data_criacao
+      - id
+      - produto_id
+      - produtos
+      - quantidade
+      - status
+    PatchedAtualizarEstoque:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        categoria:
+          allOf:
+          - $ref: '#/components/schemas/SerializerCategoriaProduto'
+          readOnly: true
+        preco:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+          readOnly: true
+        nome:
+          type: string
+          readOnly: true
+        imagem:
+          type: string
+          readOnly: true
+        descricao:
+          type: string
+          readOnly: true
+          nullable: true
+        estoque:
+          allOf:
+          - $ref: '#/components/schemas/Estoque'
+          readOnly: true
+        quantidade:
+          type: integer
+          writeOnly: true
+    PatchedAtualizarPropriaConta:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          maxLength: 30
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 256
+        first_name:
+          type: string
+          maxLength: 90
+        last_name:
+          type: string
+          maxLength: 120
+        telefone:
+          type: string
+          maxLength: 15
+        cpf:
+          type: string
+          readOnly: true
+        data_nascimento:
+          type: string
+          format: date
+        is_employee:
+          type: boolean
+          readOnly: true
+        is_superuser:
+          type: boolean
+          readOnly: true
+          title: Superuser status
+          description: Designates that this user has all permissions without explicitly
+            assigning them.
+        pontos_de_fidelidade:
+          type: integer
+          readOnly: true
+    PatchedEditarProduto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+        data_criacao:
+          type: string
+          format: date-time
+          readOnly: true
+        conta:
+          type: string
+          format: uuid
+          readOnly: true
+    PatchedEditarQuantidadeProduto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          readOnly: true
+        data_criacao:
+          type: string
+          format: date-time
+          readOnly: true
+        conta:
+          type: string
+          format: uuid
+          readOnly: true
+        quantidade:
+          type: integer
+          writeOnly: true
+          minimum: 1
+        produtos:
+          type: string
+          readOnly: true
+    PatchedEnderecoDetalhado:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        conta:
+          type: string
+          format: uuid
+        rua:
+          type: string
+        numero:
+          type: string
+        complemento:
+          type: string
+        cidade:
+          type: string
+        estado:
+          type: string
+        ponto_de_referencia:
+          type: string
+    PatchedProduto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        categoria:
+          $ref: '#/components/schemas/SerializerCategoriaProduto'
+        preco:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        nome:
+          type: string
+          maxLength: 100
+        imagem:
+          type: string
+        descricao:
+          type: string
+          nullable: true
+        estoque:
+          $ref: '#/components/schemas/Estoque'
+    PatchedSerializerCategoria:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nome:
+          type: string
+          maxLength: 20
+    PatchedVerificarConta:
+      type: object
+      properties:
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+    Produto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        categoria:
+          $ref: '#/components/schemas/SerializerCategoriaProduto'
+        preco:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,3}(?:\.\d{0,2})?$
+        nome:
+          type: string
+          maxLength: 100
+        imagem:
+          type: string
+        descricao:
+          type: string
+          nullable: true
+        estoque:
+          $ref: '#/components/schemas/Estoque'
+      required:
+      - categoria
+      - estoque
+      - id
+      - imagem
+      - nome
+      - preco
+    SerializerCategoria:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nome:
+          type: string
+          maxLength: 20
+      required:
+      - id
+      - nome
+    SerializerCategoriaProduto:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nome:
+          type: string
+          maxLength: 20
+      required:
+      - id
+      - nome
+    StatusEnum:
+      enum:
+      - aberta
+      - fechada
+      - em rota de entrega
+      - entregue
+      type: string
+    VerificarConta:
+      type: object
+      properties:
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
