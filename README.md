@@ -13,6 +13,7 @@
     - [3.3. Entrando no ambiente virtual](#33-entrando-no-ambiente-virtual)
     - [3.4. Instale as dependências](#34-instale-as-dependências)
     - [3.4. Execute as migrações para realizar a persistência de dados](#34-execute-as-migrações-para-realizar-a-persistência-de-dados)
+    - [3.5. Inicialize a aplicação](#35-inicialize-a-aplicação)
   - [4. Autenticação](#4-autenticação)
   - [5. Rotas](#5-rotas)
     - [Documentação da API](#documentação-da-api)
@@ -59,7 +60,7 @@ Tecnologias usadas nesse projeto:
 
 [ Voltar ao topo ](#sumário)
 
-![ERD](<[/diagram-er.png](https://drive.google.com/file/d/1E7HWnj8lBfhXLGLWDmS0lR7gwxZYrFDR/view)>)
+![DER](Diagrama-Izamaravilha.png)
 
 ---
 
@@ -135,6 +136,20 @@ python manage.py migrate # terminal powershell
 ./manage.py migrate
 ```
 
+### 3.5. Inicialize a aplicação
+
+**Windows**
+
+```shell
+python manage.py runserver # terminal powershell
+```
+
+**Linux**
+
+```shell
+./manage.py runserver
+```
+
 ---
 
 ## 4. Autenticação
@@ -153,7 +168,7 @@ autorizações diferentes.
 
 ### Documentação da API
 
-doc aqui
+`GET docs/`
 
 É possível acessar à documentação completa para poder utilizar a API.
 
