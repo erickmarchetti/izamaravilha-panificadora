@@ -44,8 +44,6 @@ Tecnologias usadas nesse projeto:
 - [IPython](https://pypi.org/project/ipython/)
 - [IPDB](https://pypi.org/project/ipdb/)
 
-**Base URL: https://izamaravilha-project.herokuapp.com/api/**
-
 ### 1.1. Time
 
 > - [Erick Guimarães Marchetti](https://github.com/erickmarchetti) - TL
@@ -154,6 +152,8 @@ autorizações diferentes.
 [ Voltar ao topo ](#sumário)
 
 ### Documentação da API
+
+doc aqui
 
 É possível acessar à documentação completa para poder utilizar a API.
 
